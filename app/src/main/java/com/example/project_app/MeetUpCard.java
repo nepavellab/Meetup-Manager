@@ -15,16 +15,16 @@ public class MeetUpCard implements Serializable {
         guests = new ArrayList<>();
     }
 
-    public MeetUpCard(String name,
-                      String address,
-                      String date,
-                      String start_time,
-                      String end_time) {
+    public MeetUpCard(String _name,
+                      String _address,
+                      String _date,
+                      String _start_time,
+                      String _end_time) {
         guests = new ArrayList<>();
-        this.name       = name;
-        this.address    = address;
-        this.date       = date;
-        this.start_time = start_time;
-        this.end_time   = end_time;
+        this.name       = _name;
+        this.address    = _address;
+        this.date       = _date;
+        this.start_time = _start_time;
+        this.end_time   = _end_time;
     }
 }

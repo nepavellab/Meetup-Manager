@@ -1,14 +1,19 @@
 package com.example.project_app;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -20,12 +25,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MeetInfoDesk extends AppCompatActivity {
     private DatabaseReference database;
-
-    LinearLayout linearLayout;
+    private LinearLayout linearLayout;
+    private MeetUpCard local_card;
 
     public void addGuest(View view) {
         Intent intent = new Intent(this, AddNewGuest.class);
         intent.putExtra("KEY", database.getParent().getKey());
+        intent.putExtra(MeetUpCard.class.getSimpleName(), local_card);
         startActivity(intent);
     }
 
@@ -36,11 +42,11 @@ public class MeetInfoDesk extends AppCompatActivity {
 
         Bundle meet_up_info = getIntent().getExtras();
         // Информация о текущем мероприятии
-        MeetUpCard local_card = (MeetUpCard) meet_up_info.getSerializable(MeetUpCard.class.getSimpleName());
+        local_card = (MeetUpCard) meet_up_info.getSerializable(MeetUpCard.class.getSimpleName());
         // Ключ текущего (кодовое слово) мероприятия для базы данных
-        String key = meet_up_info.getString("KEY");
+        String KEY = meet_up_info.getString("KEY");
 
-        database = FirebaseDatabase.getInstance().getReference("Meets").child(key).child("GUESTS");
+        database = FirebaseDatabase.getInstance().getReference("Meets").child(KEY).child("GUESTS");
 
         TextView meet_name = findViewById(R.id.local_meet_name);
         meet_name.setText("Название: " + local_card.name);
@@ -91,6 +97,31 @@ public class MeetInfoDesk extends AppCompatActivity {
 
                             TextView guest_phone_number = constraintLayout.findViewById(R.id.guest_phone_number);
                             guest_phone_number.setText(guest.phone_number);
+
+                            ImageButton delete_btn = constraintLayout.findViewById(R.id.delete_guest_button);
+
+                            delete_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(MeetInfoDesk.this);
+                                    builder.setTitle("Подтверждение удаления")
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .setMessage("Удалить гостя " + guest.name + "?")
+                                            .setPositiveButton("Подтвердить", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // Удаление мероприятия и его карточки
+                                                    database.child(guest.id).removeValue();
+                                                    linearLayout.removeView(findViewById(Integer.parseInt(db.getKey())));
+                                                    Toast msg = Toast.makeText(MeetInfoDesk.this,"Удалено", Toast.LENGTH_SHORT);
+                                                    msg.setGravity(Gravity.TOP, 0, 100);
+                                                    msg.show();
+                                                }
+                                            })
+                                            .setNegativeButton("Отмена", null)
+                                            .create().show();
+                                }
+                            });
 
                             linearLayout.addView(constraintLayout);
                         }

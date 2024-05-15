@@ -9,13 +9,13 @@ public class Guest implements Serializable {
         // default to interface
     }
 
-    public Guest(String id,
-                 String name,
-                 String email,
-                 String phone_number) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone_number = phone_number;
+    public Guest(String _id,
+                 String _name,
+                 String _email,
+                 String _phone_number) {
+        this.id = _id;
+        this.name = _name;
+        this.email = _email;
+        this.phone_number = _phone_number;
     }
 }

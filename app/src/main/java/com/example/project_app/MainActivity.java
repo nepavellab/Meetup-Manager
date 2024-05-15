@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                     builder.setTitle("Подтверждение удаления")
                                             .setIcon(android.R.drawable.ic_dialog_alert)
                                             .setMessage("Удалить мероприятие " + name.getText().toString() + "?")
-                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton("Подтвердить", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     // Удаление мероприятия и его карточки

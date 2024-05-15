@@ -15,18 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 public class CreateMeetUp extends AppCompatActivity {
     private DatabaseReference database;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_meet_up);
-        TimePicker startTime = findViewById(R.id.meet_start_time);
-        TimePicker endTime = findViewById(R.id.meet_end_time);
-        // Задание 24-часового формата таймера
-        startTime.setIs24HourView(true);
-        endTime.setIs24HourView(true);
-        database = FirebaseDatabase.getInstance().getReference("Meets");
-    }
-
     public void createMeetUp(View view) {
         // Получение данных из представлений
         TimePicker meetup_start_time = findViewById(R.id.meet_start_time);
@@ -47,6 +35,9 @@ public class CreateMeetUp extends AppCompatActivity {
             empty_name.setGravity(Gravity.TOP, 0, 100);
             empty_name.show();
         } else {
+            /*
+                ДОПИСАТЬ ПРОВЕРКУ СУЩЕСТВОВАНИЯ
+             */
             // Если мероприятие с указанным кодовым словом уже существует
             if (false) {
                 Toast meet_exists = Toast.makeText(this, "Такое мероприятие уже существует!", Toast.LENGTH_SHORT);
@@ -67,6 +58,18 @@ public class CreateMeetUp extends AppCompatActivity {
                 startActivity(new Intent(this, MainActivity.class));
             }
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_meet_up);
+        TimePicker startTime = findViewById(R.id.meet_start_time);
+        TimePicker endTime = findViewById(R.id.meet_end_time);
+        // Задание 24-часового формата таймера
+        startTime.setIs24HourView(true);
+        endTime.setIs24HourView(true);
+        database = FirebaseDatabase.getInstance().getReference("Meets");
     }
 
     // Форматирование строки даты к виду: "дд.мм.гггг"
