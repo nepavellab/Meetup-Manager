@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="commonBackground" parent="">
-        <item name="android:background">@color/black</item>
+        <item name="android:background">@color/white</item>
     </style>
 
-    <style name="meetCardStyle" parent="">
-        <item name="android:background">@drawable/meet_card_style</item>
+    <style name="cardStyle" parent="">
+        <item name="android:background">@drawable/card_style</item>
     </style>
 </resources>

@@ -16,7 +16,7 @@
         android:layout_marginTop="15sp"
         android:onClick="createMeet"
         android:src="@drawable/add_icon"
-        android:background="@android:color/transparent"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
