@@ -1,5 +1,6 @@
 package com.example.project_app;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
                             TextView name = constraintLayout.findViewById(R.id.meet_card_name);
                             name.setText(db.getValue(MeetUpCard.class).name);
+
+                            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                            params.bottomMargin = 25;
+                            params.leftMargin = 15;
+                            params.rightMargin = 15;
+
+                            constraintLayout.setLayoutParams(params);
 
                             // Создание кнопки редактирования
                             ImageButton edit_btn = constraintLayout.findViewById(R.id.edit_button);

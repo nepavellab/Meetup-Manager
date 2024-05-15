@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -94,6 +95,14 @@ public class MeetInfoDesk extends AppCompatActivity {
 
                             ConstraintLayout constraintLayout = (ConstraintLayout) inflater.inflate(R.layout.guest_card, null);
                             constraintLayout.setId(Integer.parseInt(guest.id));
+
+                            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                            params.bottomMargin = 25;
+                            params.leftMargin = 15;
+                            params.rightMargin = 15;
+
+                            constraintLayout.setLayoutParams(params);
 
                             TextView guest_name = constraintLayout.findViewById(R.id.guest_name);
                             guest_name.setText(guest.name);
