@@ -1,6 +1,6 @@
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="dark_green">#FF2E8B57</color>
     <color name="navy">#FF000080</color>
+    <color name="dark_red">#5c0a0a</color>
 </resources>
