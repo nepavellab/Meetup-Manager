@@ -34,29 +34,27 @@ public class CreateMeetUp extends AppCompatActivity {
             Toast empty_name = Toast.makeText(this, "Не все поля заполнены!", Toast.LENGTH_SHORT);
             empty_name.setGravity(Gravity.TOP, 0, 100);
             empty_name.show();
+            return;
+        }
+        /*
+            ДОПИСАТЬ ПРОВЕРКУ СУЩЕСТВОВАНИЯ
+        */
+        // Если мероприятие с указанным кодовым словом уже существует
+        if (false) {
+            Toast meet_exists = Toast.makeText(this, "Такое мероприятие уже существует!", Toast.LENGTH_SHORT);
+            meet_exists.setGravity(Gravity.TOP, 0, 100);
+            meet_exists.show();
         } else {
-            /*
-                ДОПИСАТЬ ПРОВЕРКУ СУЩЕСТВОВАНИЯ
-             */
-            // Если мероприятие с указанным кодовым словом уже существует
-            if (false) {
-                Toast meet_exists = Toast.makeText(this, "Такое мероприятие уже существует!", Toast.LENGTH_SHORT);
-                meet_exists.setGravity(Gravity.TOP, 0, 100);
-                meet_exists.show();
-            } else {
-                // Запись информации и созданной встречи в базу данных
-                MeetUpCard card = new MeetUpCard(
-                        meet_name, meet_address, meet_date, meet_start_time, meet_end_time
-                );
-                database.child(meet_code).setValue(card);
+            // Запись информации и созданной встречи в базу данных
+            MeetUpCard card = new MeetUpCard(meet_name, meet_address, meet_date, meet_start_time, meet_end_time);
+            database.child(meet_code).setValue(card);
 
-                Toast meet_exists = Toast.makeText(this, "Мероприятие успешно добавлено", Toast.LENGTH_SHORT);
-                meet_exists.setGravity(Gravity.TOP, 0, 100);
-                meet_exists.show();
+            Toast meet_exists = Toast.makeText(this, "Мероприятие успешно добавлено", Toast.LENGTH_SHORT);
+            meet_exists.setGravity(Gravity.TOP, 0, 100);
+            meet_exists.show();
 
-                // Возвращаемся на главную страницу
-                startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
+            // Возвращаемся на главную страницу
+            startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
     }
 

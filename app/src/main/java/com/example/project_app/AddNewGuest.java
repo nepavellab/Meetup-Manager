@@ -21,6 +21,21 @@ public class AddNewGuest extends AppCompatActivity {
         EditText guest_phone = findViewById(R.id.guest_phone_input);
         EditText guest_email = findViewById(R.id.guest_email_input);
 
+        if (guest_email.getText().toString().isEmpty() ||
+            guest_name.getText().toString().isEmpty()  ||
+            guest_phone.getText().toString().isEmpty() ||
+            guest_id.getText().toString().isEmpty()) {
+            Toast msg = Toast.makeText(AddNewGuest.this,"Не все поля заполнены!", Toast.LENGTH_SHORT);
+            msg.setGravity(Gravity.TOP, 0, 100);
+            msg.show();
+            return;
+        } else if (!phoneNumberValidate(guest_phone.getText().toString()))  { // номер телефона не валидный
+            Toast msg = Toast.makeText(AddNewGuest.this,"Указанный номер телефона не является корретным", Toast.LENGTH_SHORT);
+            msg.setGravity(Gravity.TOP, 0, 100);
+            msg.show();
+            return;
+        }
+
         Guest guest = new Guest(
                 guest_id.getText().toString(),
                 guest_name.getText().toString(),
@@ -32,6 +47,7 @@ public class AddNewGuest extends AppCompatActivity {
         Toast msg = Toast.makeText(AddNewGuest.this,"Гость " + guest.name + " добавлен", Toast.LENGTH_SHORT);
         msg.setGravity(Gravity.TOP, 0, 100);
         msg.show();
+
         Intent intent = new Intent(this, MeetInfoDesk.class);
         intent.putExtra("KEY", KEY);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -54,5 +70,9 @@ public class AddNewGuest extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    private boolean phoneNumberValidate(String phone_numb) { // проверка валидации корректна только для телефонных номеров РФ
+        return phone_numb.length() == 11 && (phone_numb.charAt(0) == '8' || phone_numb.charAt(0) == '7');
     }
 }
