@@ -34,6 +34,7 @@ public class AddNewGuest extends AppCompatActivity {
         msg.show();
         Intent intent = new Intent(this, MeetInfoDesk.class);
         intent.putExtra("KEY", KEY);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(MeetUpCard.class.getSimpleName(), local_card);
         startActivity(intent);
     }

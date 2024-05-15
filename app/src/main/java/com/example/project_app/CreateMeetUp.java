@@ -55,7 +55,7 @@ public class CreateMeetUp extends AppCompatActivity {
                 meet_exists.show();
 
                 // Возвращаемся на главную страницу
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         }
     }

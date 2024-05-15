@@ -3,13 +3,17 @@ package com.example.project_app;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +26,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 public class MeetInfoDesk extends AppCompatActivity {
     private DatabaseReference database;
@@ -99,7 +108,6 @@ public class MeetInfoDesk extends AppCompatActivity {
                             guest_phone_number.setText(guest.phone_number);
 
                             ImageButton delete_btn = constraintLayout.findViewById(R.id.delete_guest_button);
-
                             delete_btn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -120,6 +128,30 @@ public class MeetInfoDesk extends AppCompatActivity {
                                             })
                                             .setNegativeButton("Отмена", null)
                                             .create().show();
+                                }
+                            });
+
+                            Button generate_qr_btn = constraintLayout.findViewById(R.id.generate_qr);
+                            generate_qr_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ImageView QR_view = constraintLayout.findViewById(R.id.QR);
+                                    try {
+                                        // Генерируем QR
+                                        BitMatrix bitMatrix = new QRCodeWriter().encode(guest.getDataForQr(), BarcodeFormat.QR_CODE, 500, 500);
+                                        // КОД ДЛЯ ТЕСТИРОВАНИЯ
+                                        Bitmap bmp = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
+                                        for (int x = 0; x < 500; x++) {
+                                            for (int y = 0; y < 500; y++) {
+                                                bmp.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
+                                            }
+                                        }
+                                        QR_view.setImageBitmap(bmp);
+                                    } catch (WriterException exp) {
+                                        Toast msg = Toast.makeText(MeetInfoDesk.this,"Ошибка генерации QR", Toast.LENGTH_SHORT);
+                                        msg.setGravity(Gravity.TOP, 0, 100);
+                                        msg.show();
+                                    }
                                 }
                             });
 

@@ -13,9 +13,13 @@ public class Guest implements Serializable {
                  String _name,
                  String _email,
                  String _phone_number) {
-        this.id = _id;
-        this.name = _name;
-        this.email = _email;
-        this.phone_number = _phone_number;
+        id = _id;
+        name = _name;
+        email = _email;
+        phone_number = _phone_number;
+    }
+
+    public String getDataForQr() {
+        return id + " " + name + " " + email + " " + phone_number;
     }
 }
