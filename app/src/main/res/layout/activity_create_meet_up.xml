@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateMeetUp">
+
+    <TextView
+        android:id="@+id/info_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:text="Укажите необходимую информацию"
+        android:textAlignment="center"
+        android:textColor="@color/navy"
+        android:textSize="26sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10sp"
+        android:id="@+id/scroll_data"
+        app:layout_constraintTop_toBottomOf="@+id/info_label"
+        app:layout_constraintBottom_toTopOf="@+id/create_click"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/meet_code_word"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:hint="Введите код"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textColor="#FF000000"
+                android:textSize="26sp"
+                android:background="@drawable/edit_text_background"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <EditText
+                android:id="@+id/meet_naming"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:hint="Введите название"
+                android:inputType="text"
+                android:textAlignment="center"
+                android:textColor="#FF000000"
+                android:textSize="26sp"
+                android:background="@drawable/edit_text_background"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:hint="Введите адрес"
+                android:inputType="text"
+                android:textAlignment="center"
+                android:textColor="#FF000000"
+                android:textSize="26sp"
+                android:background="@drawable/edit_text_background"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:id="@+id/date_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="10sp"
+                android:text="Дата мероприятия"
+                android:textAlignment="center"
+                android:textColor="@color/navy"
+                android:textSize="26sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/address" />
+
+            <DatePicker
+                android:id="@+id/meet_date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:dayOfWeekBackground="@color/navy"
+                android:headerBackground="@color/navy"
+                android:startYear="2024"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_label" />
+
+            <TextView
+                android:id="@+id/start_time_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="10sp"
+                android:text="Время начала мероприятия"
+                android:textAlignment="center"
+                android:textColor="@color/navy"
+                android:textSize="26sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/meet_date" />
+
+            <TimePicker
+                android:id="@+id/meet_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_time_label" />
+
+            <TextView
+                android:id="@+id/end_time_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="10sp"
+                android:text="Время окончания мероприятия"
+                android:textAlignment="center"
+                android:textColor="@color/navy"
+                android:textSize="26sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/start_time_label" />
+
+            <TimePicker
+                android:id="@+id/meet_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/end_time_label" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/create_click"
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        android:text="Создать"
+        android:background="@android:drawable/btn_default"
+        android:textSize="26sp"
+        android:onClick="createMeetUp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_data"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
