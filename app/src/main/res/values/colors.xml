@@ -1,5 +1,8 @@
 <resources>
     <color name="black">#000000</color>
+    <color name="meet_black">#191C1E</color>
     <color name="white">#FFFFFFFF</color>
     <color name="navy">#FF000080</color>
+    <color name="valid_green">#FF00ff00</color>
+    <color name="error_red">#C00003</color>
 </resources>

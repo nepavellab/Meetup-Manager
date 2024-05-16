@@ -25,14 +25,10 @@ public class AddNewGuest extends AppCompatActivity {
             guest_name.getText().toString().isEmpty()  ||
             guest_phone.getText().toString().isEmpty() ||
             guest_id.getText().toString().isEmpty()) {
-            Toast msg = Toast.makeText(AddNewGuest.this,"Не все поля заполнены!", Toast.LENGTH_SHORT);
-            msg.setGravity(Gravity.TOP, 0, 100);
-            msg.show();
+            CustomToast.makeText(this, R.string.empty_fields, false).show();
             return;
         } else if (!phoneNumberValidate(guest_phone.getText().toString()))  { // номер телефона не валидный
-            Toast msg = Toast.makeText(AddNewGuest.this,"Указанный номер телефона не является корретным", Toast.LENGTH_SHORT);
-            msg.setGravity(Gravity.TOP, 0, 100);
-            msg.show();
+            CustomToast.makeText(this, R.string.invalid_phone_number, false).show();
             return;
         }
 
@@ -43,10 +39,7 @@ public class AddNewGuest extends AppCompatActivity {
                 guest_phone.getText().toString());
 
         database.child(guest.id).setValue(guest);
-
-        Toast msg = Toast.makeText(AddNewGuest.this,"Гость " + guest.name + " добавлен", Toast.LENGTH_SHORT);
-        msg.setGravity(Gravity.TOP, 0, 100);
-        msg.show();
+        CustomToast.makeText(this, "Гость " + guest.name + " успешно добавлен", true).show();
 
         Intent intent = new Intent(this, MeetInfoDesk.class);
         intent.putExtra("KEY", KEY);

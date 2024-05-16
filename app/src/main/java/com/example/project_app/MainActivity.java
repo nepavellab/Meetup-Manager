@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,13 +58,13 @@ public class MainActivity extends AppCompatActivity {
                 if (snapshot.getChildrenCount() == 0) {
                     linearLayout.removeAllViews();
                     TextView meet_label = new TextView(MainActivity.this);
-                    meet_label.setText("Добро пожаловать!");
+                    meet_label.setText(R.string.welcome_meets);
                     meet_label.setTextColor(0xFF000080);
                     meet_label.setTextSize(30);
+
+                    linearLayout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
                     meet_label.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
-                    meet_label.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
-                    ));
 
                     linearLayout.addView(meet_label);
                 } else {
@@ -104,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                    builder.setTitle("Подтверждение удаления")
-                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                    builder.setTitle(R.string.confirm_meet_delete)
+                                            .setIcon(android.R.drawable.ic_delete)
                                             .setMessage("Удалить мероприятие " + name.getText().toString() + "?")
-                                            .setPositiveButton("Подтвердить", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     // Удаление мероприятия и его карточки
@@ -118,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                                                     msg.show();
                                                 }
                                             })
-                                            .setNegativeButton("Отмена", null)
+                                            .setNegativeButton(R.string.cancellation, null)
                                             .create().show();
                                 }
                             });

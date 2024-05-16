@@ -31,9 +31,7 @@ public class CreateMeetUp extends AppCompatActivity {
 
         // Проверка заполнения всех полей (все текстовые представления обязательны для заполнения)
         if (meet_name.isEmpty() || meet_code.isEmpty() || meet_address.isEmpty()) {
-            Toast empty_name = Toast.makeText(this, "Не все поля заполнены!", Toast.LENGTH_SHORT);
-            empty_name.setGravity(Gravity.TOP, 0, 100);
-            empty_name.show();
+            CustomToast.makeText(this, R.string.empty_fields, false).show();
             return;
         }
         /*
@@ -48,12 +46,7 @@ public class CreateMeetUp extends AppCompatActivity {
             // Запись информации и созданной встречи в базу данных
             MeetUpCard card = new MeetUpCard(meet_name, meet_address, meet_date, meet_start_time, meet_end_time);
             database.child(meet_code).setValue(card);
-
-            Toast meet_exists = Toast.makeText(this, "Мероприятие успешно добавлено", Toast.LENGTH_SHORT);
-            meet_exists.setGravity(Gravity.TOP, 0, 100);
-            meet_exists.show();
-
-            // Возвращаемся на главную страницу
+            CustomToast.makeText(this, "Мероприятие " + meet_name + " успешно добавлено", true).show();
             startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
     }
