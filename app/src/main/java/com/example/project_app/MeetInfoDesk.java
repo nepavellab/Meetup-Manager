@@ -31,6 +31,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import java.util.UUID;
 
 public class MeetInfoDesk extends AppCompatActivity {
     private DatabaseReference database;
@@ -142,7 +143,6 @@ public class MeetInfoDesk extends AppCompatActivity {
                             generate_qr_btn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    //ImageView QR_view = constraintLayout.findViewById(R.id.QR);
                                     try {
                                         // Генерация QR
                                         BitMatrix bitMatrix = new QRCodeWriter().encode(guest.getDataForQr(), BarcodeFormat.QR_CODE, 500, 500);
@@ -153,18 +153,16 @@ public class MeetInfoDesk extends AppCompatActivity {
                                                 qrMap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
                                             }
                                         }
-                                        //QR_view.setImageBitmap(qrMap);
-                                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), qrMap, "Your QR", null);
+                                        String imgName = "QR_" + UUID.randomUUID().toString();
+                                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), qrMap, imgName, null);
                                         Uri qrUri = Uri.parse(path);
 
                                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
                                         shareIntent.setType("images/jpeg");
-                                        shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                                         shareIntent.putExtra(Intent.EXTRA_STREAM, qrUri);
                                         shareIntent.putExtra(Intent.EXTRA_TEXT, guest.name + " " + guest.email + " " + guest.phone_number);
                                         shareIntent.setType("text/plain");
-                                        startActivity(shareIntent);
-                                        CustomToast.makeText(MeetInfoDesk.this, R.string.successful_qr, true).show();
+                                        startActivity(Intent.createChooser(shareIntent, "Поделиться"));
 
                                         // ЗАПЛАНИРОВАННОЕ УДАЛЕНИЕ (ФИКС)
                                         new Handler(Looper.getMainLooper()).postDelayed(() -> getContentResolver().delete(qrUri, null, null), 20000);
