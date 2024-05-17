@@ -1,6 +1,5 @@
 package com.example.project_app;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
