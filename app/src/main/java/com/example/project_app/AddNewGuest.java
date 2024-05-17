@@ -58,11 +58,6 @@ public class AddNewGuest extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference("Meets").child(KEY).child("GUESTS");
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     private boolean phoneNumberValidate(String phone_numb) { // проверка валидации корректна только для телефонных номеров РФ
         return phone_numb.length() == 11 && (phone_numb.charAt(0) == '8' || phone_numb.charAt(0) == '7');
     }

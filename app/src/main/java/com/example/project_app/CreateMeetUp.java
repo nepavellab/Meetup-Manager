@@ -57,9 +57,9 @@ public class CreateMeetUp extends AppCompatActivity {
         setContentView(R.layout.activity_create_meet_up);
         TimePicker startTime = findViewById(R.id.meet_start_time);
         TimePicker endTime = findViewById(R.id.meet_end_time);
+
         // Задание 24-часового формата таймера
         startTime.setIs24HourView(true);
-
         endTime.setIs24HourView(true);
 
         database = FirebaseDatabase.getInstance().getReference("Meets");

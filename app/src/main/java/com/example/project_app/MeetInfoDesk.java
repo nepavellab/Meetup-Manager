@@ -66,11 +66,7 @@ public class MeetInfoDesk extends AppCompatActivity {
         meet_address.setText(local_card.address);
 
         linearLayout = findViewById(R.id.guest_list);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         displayGuests();
     }
 

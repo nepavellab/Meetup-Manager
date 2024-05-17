@@ -37,11 +37,6 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference("Meets");
         setContentView(R.layout.activity_main);
         linearLayout = findViewById(R.id.meet_up_list);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         displayCards();
     }
 
