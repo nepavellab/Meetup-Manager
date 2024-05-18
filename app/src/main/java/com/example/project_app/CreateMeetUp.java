@@ -12,6 +12,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Random;
 import java.util.UUID;
 
+import io.github.muddz.styleabletoast.StyleableToast;
+
 public class CreateMeetUp extends AppCompatActivity {
     private DatabaseReference database;
 
@@ -30,23 +32,16 @@ public class CreateMeetUp extends AppCompatActivity {
 
         // Проверка заполнения всех полей (все текстовые представления обязательны для заполнения)
         if (meet_name.isEmpty() || meet_address.isEmpty()) {
-            CustomToast.makeText(this, R.string.empty_fields, false).show();
+            StyleableToast.makeText(this, "Не все поля заполнены!", R.style.invalid_toast).show();
             return;
         }
-        /*
-            ДОПИСАТЬ ПРОВЕРКУ СУЩЕСТВОВАНИЯ
-        */
-        // Если мероприятие с указанным кодовым словом уже существует
-        if (false) {
-            CustomToast.makeText(this, R.string.meet_already_exists, false).show();
-        } else {
-            // Запись информации и созданной встречи в базу данных
-            String meet_id = generateMeetId(meet_name);
-            MeetUpCard card = new MeetUpCard(meet_name, meet_address, meet_date, meet_start_time, meet_end_time);
-            database.child(meet_id).setValue(card);
-            CustomToast.makeText(this, "Мероприятие " + meet_name + " успешно добавлено", true).show();
-            startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-        }
+
+        // Запись информации и созданной встречи в базу данных
+        String meet_id = generateMeetId(meet_name);
+        MeetUpCard card = new MeetUpCard(meet_name, meet_address, meet_date, meet_start_time, meet_end_time);
+        database.child(meet_id).setValue(card);
+        StyleableToast.makeText(this, "Мероприятие " + meet_name + " успешно добавлено", R.style.valid_toast).show();
+        startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     @Override

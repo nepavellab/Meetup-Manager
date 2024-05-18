@@ -11,6 +11,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Random;
 import java.util.UUID;
 
+import io.github.muddz.styleabletoast.StyleableToast;
+
 public class AddNewGuest extends AppCompatActivity {
     private DatabaseReference database;
     private MeetUpCard local_card;
@@ -24,10 +26,10 @@ public class AddNewGuest extends AppCompatActivity {
         if (guest_email.getText().toString().isEmpty() ||
             guest_name.getText().toString().isEmpty()  ||
             guest_phone.getText().toString().isEmpty()) {
-            CustomToast.makeText(this, R.string.empty_fields, false).show();
+            StyleableToast.makeText(this, "Не все поля заполнены!", R.style.invalid_toast).show();
             return;
         } else if (!phoneNumberValidate(guest_phone.getText().toString()))  { // номер телефона не валидный
-            CustomToast.makeText(this, R.string.invalid_phone_number, false).show();
+            StyleableToast.makeText(this, "Указанный номер телефона не является корретным", R.style.invalid_toast).show();
             return;
         }
 
@@ -39,7 +41,7 @@ public class AddNewGuest extends AppCompatActivity {
                 guest_phone.getText().toString());
 
         database.child(guest.id).setValue(guest);
-        CustomToast.makeText(this, "Гость " + guest.name + " успешно добавлен", true).show();
+        StyleableToast.makeText(this, "Гость " + guest.name + " успешно добавлен", R.style.valid_toast).show();
 
         Intent intent = new Intent(this, MeetInfoDesk.class);
         intent.putExtra("KEY", KEY);

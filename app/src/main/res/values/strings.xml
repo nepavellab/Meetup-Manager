@@ -1,14 +1,22 @@
 <resources>
-    <string name="app_name">project_app</string>
     <string name="welcome_meets">Добро пожаловать!</string>
-    <string name="empty_fields">Не все поля заполнены!</string>
     <string name="confirm_meet_delete">Подтвердите удаление мероприятия</string>
     <string name="delete">Удалить</string>
     <string name="cancellation">Отмена</string>
     <string name="guests_here">Здесь будут гости мероприятия</string>
-    <string name="qr_generate_error">Ошибка генерации QR</string>
-    <string name="invalid_phone_number">Указанный номер телефона не является корретным</string>
     <string name="share">Поделиться</string>
-    <string name="meet_already_exists">Мероприятие с указанным id уже существует</string>
     <string name="application_title">Meetup Manager</string>
+    <string name="edit">Редактировать</string>
+    <string name="guest_name">Имя гостя</string>
+    <string name="email">Адрес электронной почты</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="add_guest">Добавить гостя</string>
+    <string name="send_QR">Отправить QR</string>
+    <string name="necessary_info">Укажите необходимую информацию</string>
+    <string name="input_title">Введите название</string>
+    <string name="input_address">Введите адрес</string>
+    <string name="meet_date">Дата мероприятия</string>
+    <string name="meet_start_time">Время начала мероприятия</string>
+    <string name="meet_end_time">Время окончания мероприятия</string>
+    <string name="create_meet">Создать мероприятие</string>
 </resources>

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15sp"
         android:layout_marginRight="15sp"
-        android:background="@color/white"
+        android:background="@color/meet_black"
         android:onClick="createMeet"
         android:src="@drawable/add_icon"
         app:layout_constraintRight_toRightOf="parent"

@@ -32,6 +32,8 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import java.util.UUID;
 
+import io.github.muddz.styleabletoast.StyleableToast;
+
 public class MeetInfoDesk extends AppCompatActivity {
     private DatabaseReference database;
     private LinearLayout linearLayout;
@@ -119,7 +121,7 @@ public class MeetInfoDesk extends AppCompatActivity {
                         // Удаление гостя
                         database.child(guest.id).removeValue();
                         linearLayout.removeView(findViewById(getNumericId(guest.id)));
-                        CustomToast.makeText(MeetInfoDesk.this, "Гость " + guest.name + " успешно удалён", true).show();
+                        StyleableToast.makeText(MeetInfoDesk.this, "Гость " + guest.name + " успешно удалён", R.style.valid_toast).show();
                     })
                     .setNegativeButton(R.string.cancellation, null)
                     .create().show();
@@ -145,7 +147,7 @@ public class MeetInfoDesk extends AppCompatActivity {
                 // ЗАПЛАНИРОВАННОЕ УДАЛЕНИЕ (ФИКС)
                 new Handler(Looper.getMainLooper()).postDelayed(() -> getContentResolver().delete(qrUri, null, null), 15000);
             } catch (WriterException exp) {
-                CustomToast.makeText(MeetInfoDesk.this, R.string.qr_generate_error, false).show();
+                StyleableToast.makeText(MeetInfoDesk.this, "Ошибка генерации QR", R.style.invalid_toast).show();
             }
         });
         linearLayout.addView(constraintLayout);

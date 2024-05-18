@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="commonBackground" parent="">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/meet_black</item>
     </style>
 
     <style name="cardStyle" parent="">
         <item name="android:background">@drawable/card_style</item>
+    </style>
+
+    <style name="invalid_toast">
+        <item name="stTextBold">true</item>
+        <item name="stColorBackground">@color/error</item>
+        <item name="stTextColor">@color/white</item>
+        <item name="stTextSize">15sp</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">@color/white</item>
+        <item name="stIconStart">@drawable/invalid_icon</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">30dp</item>
+    </style>
+
+    <style name="valid_toast">
+        <item name="stTextBold">true</item>
+        <item name="stColorBackground">@color/valid</item>
+        <item name="stTextColor">@color/white</item>
+        <item name="stTextSize">15sp</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">@color/white</item>
+        <item name="stIconStart">@drawable/valid_icon</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">30dp</item>
     </style>
 </resources>

@@ -1,17 +1,16 @@
 package com.example.project_app;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MainActivity extends AppCompatActivity {
     private DatabaseReference database;
@@ -40,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
         displayCards();
     }
 
+    @SuppressLint("ResourceAsColor")
     private void setWelcomeLabel() {
         linearLayout.removeAllViews();
         TextView meet_label = new TextView(MainActivity.this);
         meet_label.setText(R.string.welcome_meets);
-        meet_label.setTextColor(0xFF000080);
+        meet_label.setTextColor(R.color.white);
         meet_label.setTextSize(30);
         linearLayout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
         meet_label.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         constraintLayout.setLayoutParams(params);
 
         // Создание кнопки редактирования
-        ImageButton edit_btn = constraintLayout.findViewById(R.id.edit_button);
+        FrameLayout edit_btn = constraintLayout.findViewById(R.id.edit_frame);
         edit_btn.setOnClickListener(view -> {
             // Передаём данные о выбранном мероприятии
             MeetUpCard card = dataSnapshot.getValue(MeetUpCard.class);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Создание кнопки удаления
-        ImageButton delete_btn = constraintLayout.findViewById(R.id.delete_button);
+        FrameLayout delete_btn = constraintLayout.findViewById(R.id.delete_frame);
         delete_btn.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.confirm_meet_delete)
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         int numeric_id = getNumericId(dataSnapshot.getKey());
                         database.child(dataSnapshot.getKey()).removeValue();
                         linearLayout.removeView(findViewById(numeric_id));
-                        CustomToast.makeText(this, "Мероприятие " + name.getText() + " удалено", true).show();
+                        StyleableToast.makeText(this, "Мероприятие " + name.getText() + " удалено", R.style.valid_toast).show();
                     })
                     .setNegativeButton(R.string.cancellation, null)
                     .create().show();
