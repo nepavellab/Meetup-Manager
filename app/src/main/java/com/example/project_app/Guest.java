@@ -19,7 +19,7 @@ public class Guest implements Serializable {
         phone_number = _phone_number;
     }
 
-    public String getDataForQr() {
+    protected String getDataForQr() {
         return id + " " + name + " " + email + " " + phone_number;
     }
 }

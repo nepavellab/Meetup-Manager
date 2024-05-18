@@ -37,22 +37,6 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/meet_code_word"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30sp"
-                android:layout_marginLeft="10sp"
-                android:layout_marginRight="10sp"
-                android:hint="Введите код"
-                android:inputType="number"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:background="@drawable/edit_text_background"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <EditText
                 android:id="@+id/meet_naming"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

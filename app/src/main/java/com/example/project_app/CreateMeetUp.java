@@ -2,15 +2,15 @@ package com.example.project_app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.util.Random;
+import java.util.UUID;
 
 public class CreateMeetUp extends AppCompatActivity {
     private DatabaseReference database;
@@ -22,7 +22,6 @@ public class CreateMeetUp extends AppCompatActivity {
         DatePicker meetup_date = findViewById(R.id.meet_date);
         String meet_name = ((EditText)findViewById(R.id.meet_naming)).getText().toString();
         String meet_address = ((EditText)findViewById(R.id.address)).getText().toString();
-        String meet_code = ((EditText)findViewById(R.id.meet_code_word)).getText().toString();
 
         // Форматируем полученные данные даты и времени
         String meet_date = date_format(meetup_date);
@@ -30,7 +29,7 @@ public class CreateMeetUp extends AppCompatActivity {
         String meet_end_time = time_format(meetup_end_time);
 
         // Проверка заполнения всех полей (все текстовые представления обязательны для заполнения)
-        if (meet_name.isEmpty() || meet_code.isEmpty() || meet_address.isEmpty()) {
+        if (meet_name.isEmpty() || meet_address.isEmpty()) {
             CustomToast.makeText(this, R.string.empty_fields, false).show();
             return;
         }
@@ -42,8 +41,9 @@ public class CreateMeetUp extends AppCompatActivity {
             CustomToast.makeText(this, R.string.meet_already_exists, false).show();
         } else {
             // Запись информации и созданной встречи в базу данных
+            String meet_id = generateMeetId(meet_name);
             MeetUpCard card = new MeetUpCard(meet_name, meet_address, meet_date, meet_start_time, meet_end_time);
-            database.child(meet_code).setValue(card);
+            database.child(meet_id).setValue(card);
             CustomToast.makeText(this, "Мероприятие " + meet_name + " успешно добавлено", true).show();
             startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
@@ -74,5 +74,9 @@ public class CreateMeetUp extends AppCompatActivity {
     private String time_format(TimePicker timePicker) {
         return  (timePicker.getHour() < 10 ? "0" + timePicker.getHour() : timePicker.getHour()) + ":" +
                 (timePicker.getMinute() < 10 ? "0" + timePicker.getMinute() : timePicker.getMinute()) + ":00";
+    }
+
+    private String generateMeetId(String name) {
+        return UUID.randomUUID().toString() + "?" + name + "?" + new Random().nextInt(Integer.MAX_VALUE - 10);
     }
 }
