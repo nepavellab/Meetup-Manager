@@ -39,9 +39,7 @@ public class CreateMeetUp extends AppCompatActivity {
         */
         // Если мероприятие с указанным кодовым словом уже существует
         if (false) {
-            Toast meet_exists = Toast.makeText(this, "Такое мероприятие уже существует!", Toast.LENGTH_SHORT);
-            meet_exists.setGravity(Gravity.TOP, 0, 100);
-            meet_exists.show();
+            CustomToast.makeText(this, R.string.meet_already_exists, false).show();
         } else {
             // Запись информации и созданной встречи в базу данных
             MeetUpCard card = new MeetUpCard(meet_name, meet_address, meet_date, meet_start_time, meet_end_time);

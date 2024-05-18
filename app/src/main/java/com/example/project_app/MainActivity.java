@@ -78,42 +78,33 @@ public class MainActivity extends AppCompatActivity {
 
                             // Создание кнопки редактирования
                             ImageButton edit_btn = constraintLayout.findViewById(R.id.edit_button);
-                            edit_btn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    // Передаём данные о выбранном мероприятии
-                                    MeetUpCard card = db.getValue(MeetUpCard.class);
-                                    Intent current_card = new Intent(MainActivity.this, MeetInfoDesk.class);
-                                    current_card.putExtra(MeetUpCard.class.getSimpleName(), card);
-                                    // Передача ключа текущего мероприятия
-                                    current_card.putExtra("KEY", db.getKey());
-                                    startActivity(current_card);
-                                }
+                            edit_btn.setOnClickListener(view -> {
+                                // Передаём данные о выбранном мероприятии
+                                MeetUpCard card = db.getValue(MeetUpCard.class);
+                                Intent current_card = new Intent(MainActivity.this, MeetInfoDesk.class);
+                                current_card.putExtra(MeetUpCard.class.getSimpleName(), card);
+                                // Передача ключа текущего мероприятия
+                                current_card.putExtra("KEY", db.getKey());
+                                startActivity(current_card);
                             });
 
                             // Создание кнопки удаления
                             ImageButton delete_btn = constraintLayout.findViewById(R.id.delete_button);
-                            delete_btn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                    builder.setTitle(R.string.confirm_meet_delete)
-                                            .setIcon(android.R.drawable.ic_delete)
-                                            .setMessage("Удалить мероприятие " + name.getText().toString() + "?")
-                                            .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    // Удаление мероприятия и его карточки
-                                                    database.child(db.getKey()).removeValue();
-                                                    linearLayout.removeView(findViewById(Integer.parseInt(db.getKey())));
-                                                    Toast msg = Toast.makeText(MainActivity.this,"Удалено", Toast.LENGTH_SHORT);
-                                                    msg.setGravity(Gravity.TOP, 0, 100);
-                                                    msg.show();
-                                                }
-                                            })
-                                            .setNegativeButton(R.string.cancellation, null)
-                                            .create().show();
-                                }
+                            delete_btn.setOnClickListener(view -> {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setTitle(R.string.confirm_meet_delete)
+                                        .setIcon(android.R.drawable.ic_delete)
+                                        .setMessage("Удалить мероприятие " + name.getText().toString() + "?")
+                                        .setPositiveButton(R.string.delete, (dialog, which) -> {
+                                            // Удаление мероприятия и его карточки
+                                            database.child(db.getKey()).removeValue();
+                                            linearLayout.removeView(findViewById(Integer.parseInt(db.getKey())));
+                                            Toast msg = Toast.makeText(MainActivity.this,"Удалено", Toast.LENGTH_SHORT);
+                                            msg.setGravity(Gravity.TOP, 0, 100);
+                                            msg.show();
+                                        })
+                                        .setNegativeButton(R.string.cancellation, null)
+                                        .create().show();
                             });
 
                             linearLayout.addView(constraintLayout);

@@ -59,6 +59,7 @@ public class AddNewGuest extends AppCompatActivity {
     }
 
     private boolean phoneNumberValidate(String phone_numb) { // проверка валидации корректна только для телефонных номеров РФ
+        phone_numb = phone_numb.replaceAll("[^0-9]", "");
         return phone_numb.length() == 11 && (phone_numb.charAt(0) == '8' || phone_numb.charAt(0) == '7');
     }
 }

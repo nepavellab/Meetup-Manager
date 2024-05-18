@@ -2,7 +2,6 @@ package com.example.project_app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -72,13 +71,14 @@ public class MeetInfoDesk extends AppCompatActivity {
 
     private void displayGuests() {
         database.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getChildrenCount() == 0) {
                     linearLayout.removeAllViews();
                     TextView meet_label = new TextView(MeetInfoDesk.this);
                     meet_label.setText(R.string.guests_here);
-                    meet_label.setTextColor(0xFF000080);
+                    meet_label.setTextColor(R.color.navy);
                     meet_label.setTextSize(30);
                     meet_label.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
                     meet_label.setLayoutParams(new LinearLayout.LayoutParams(
@@ -114,57 +114,47 @@ public class MeetInfoDesk extends AppCompatActivity {
                             guest_phone_number.setText(guest.phone_number);
 
                             ImageButton delete_btn = constraintLayout.findViewById(R.id.delete_guest_button);
-                            delete_btn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(MeetInfoDesk.this);
-                                    builder.setTitle(R.string.confirm_meet_delete)
-                                            .setIcon(android.R.drawable.ic_delete)
-                                            .setMessage("Удалить гостя " + guest.name + "?")
-                                            .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    // Удаление гостя
-                                                    database.child(guest.id).removeValue();
-                                                    linearLayout.removeView(findViewById(Integer.parseInt(db.getKey())));
-                                                    CustomToast.makeText(MeetInfoDesk.this, "Гость " + guest.name + " успешно удалён", true).show();
-                                                }
-                                            })
-                                            .setNegativeButton(R.string.cancellation, null)
-                                            .create().show();
-                                }
+                            delete_btn.setOnClickListener(view -> {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MeetInfoDesk.this);
+                                builder.setTitle(R.string.confirm_meet_delete)
+                                        .setIcon(android.R.drawable.ic_delete)
+                                        .setMessage("Удалить гостя " + guest.name + "?")
+                                        .setPositiveButton(R.string.delete, (dialog, which) -> {
+                                            // Удаление гостя
+                                            database.child(guest.id).removeValue();
+                                            linearLayout.removeView(findViewById(Integer.parseInt(db.getKey())));
+                                            CustomToast.makeText(MeetInfoDesk.this, "Гость " + guest.name + " успешно удалён", true).show();
+                                        })
+                                        .setNegativeButton(R.string.cancellation, null)
+                                        .create().show();
                             });
 
                             Button generate_qr_btn = constraintLayout.findViewById(R.id.generate_qr);
-                            generate_qr_btn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    try {
-                                        // Генерация QR
-                                        BitMatrix bitMatrix = new QRCodeWriter().encode(guest.getDataForQr(), BarcodeFormat.QR_CODE, 500, 500);
-                                        // КОД ДЛЯ ТЕСТИРОВАНИЯ
-                                        Bitmap qrMap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
-                                        for (int x = 0; x < 500; x++) {
-                                            for (int y = 0; y < 500; y++) {
-                                                qrMap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
-                                            }
+                            generate_qr_btn.setOnClickListener(view -> {
+                                try {
+                                    // Генерация QR
+                                    BitMatrix bitMatrix = new QRCodeWriter().encode(guest.getDataForQr(), BarcodeFormat.QR_CODE, 500, 500);
+                                    Bitmap qrMap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
+                                    for (int x = 0; x < 500; x++) {
+                                        for (int y = 0; y < 500; y++) {
+                                            qrMap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
                                         }
-                                        String imgName = "QR_" + UUID.randomUUID().toString();
-                                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), qrMap, imgName, null);
-                                        Uri qrUri = Uri.parse(path);
-
-                                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                                        shareIntent.setType("images/jpeg");
-                                        shareIntent.putExtra(Intent.EXTRA_STREAM, qrUri);
-                                        shareIntent.putExtra(Intent.EXTRA_TEXT, guest.name + " " + guest.email + " " + guest.phone_number);
-                                        shareIntent.setType("text/plain");
-                                        startActivity(Intent.createChooser(shareIntent, "Поделиться"));
-
-                                        // ЗАПЛАНИРОВАННОЕ УДАЛЕНИЕ (ФИКС)
-                                        new Handler(Looper.getMainLooper()).postDelayed(() -> getContentResolver().delete(qrUri, null, null), 20000);
-                                    } catch (WriterException exp) {
-                                        CustomToast.makeText(MeetInfoDesk.this, R.string.qr_generate_error, false).show();
                                     }
+                                    String imgName = "QR_" + UUID.randomUUID().toString();
+                                    String path = MediaStore.Images.Media.insertImage(getContentResolver(), qrMap, imgName, null);
+                                    Uri qrUri = Uri.parse(path);
+
+                                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                    shareIntent.setType("images/jpeg");
+                                    shareIntent.putExtra(Intent.EXTRA_STREAM, qrUri);
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT, guest.name + " " + guest.email + " " + guest.phone_number);
+                                    shareIntent.setType("text/plain");
+                                    startActivity(Intent.createChooser(shareIntent, "Поделиться"));
+
+                                    // ЗАПЛАНИРОВАННОЕ УДАЛЕНИЕ (ФИКС)
+                                    new Handler(Looper.getMainLooper()).postDelayed(() -> getContentResolver().delete(qrUri, null, null), 15000);
+                                } catch (WriterException exp) {
+                                    CustomToast.makeText(MeetInfoDesk.this, R.string.qr_generate_error, false).show();
                                 }
                             });
 
