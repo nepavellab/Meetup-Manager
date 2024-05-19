@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.android.material:material:1.6.0'
     implementation 'io.github.muddz:styleabletoast:2.4.0'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     implementation libs.appcompat
@@ -38,6 +39,7 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.firebase.database
     implementation libs.ui.graphics.android
+    implementation libs.firebase.auth
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

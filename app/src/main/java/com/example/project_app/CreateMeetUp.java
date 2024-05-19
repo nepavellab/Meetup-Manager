@@ -41,7 +41,8 @@ public class CreateMeetUp extends AppCompatActivity {
         MeetUpCard card = new MeetUpCard(meet_name, meet_address, meet_date, meet_start_time, meet_end_time);
         database.child(meet_id).setValue(card);
         StyleableToast.makeText(this, "Мероприятие " + meet_name + " успешно добавлено", R.style.valid_toast).show();
-        startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(this, PersonalAccount.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        finish();
     }
 
     @Override

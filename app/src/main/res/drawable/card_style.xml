@@ -5,9 +5,10 @@
             <size android:height="5dp" />
             <solid android:color="@color/meet_black" />
             <stroke
-                android:width="4dp"
+                android:width="2dp"
                 android:color="@color/prime_red" />
-            <corners android:radius="30dp" />
+            <corners android:topLeftRadius="50sp"
+                android:bottomRightRadius="50sp"/>
         </shape>
     </item>
 </selector>

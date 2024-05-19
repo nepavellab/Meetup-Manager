@@ -7,10 +7,8 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.Random;
 import java.util.UUID;
-
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class AddNewGuest extends AppCompatActivity {
@@ -48,6 +46,7 @@ public class AddNewGuest extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(MeetUpCard.class.getSimpleName(), local_card);
         startActivity(intent);
+        finish();
     }
 
     @Override
