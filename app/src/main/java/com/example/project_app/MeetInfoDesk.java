@@ -1,10 +1,12 @@
 package com.example.project_app;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.InetAddresses;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,15 +23,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.collection.BuildConfig;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 import io.github.muddz.styleabletoast.StyleableToast;
@@ -130,22 +139,16 @@ public class MeetInfoDesk extends AppCompatActivity {
         Button generate_qr_btn = constraintLayout.findViewById(R.id.generate_qr);
         generate_qr_btn.setOnClickListener(view -> {
             try {
-                // Генерация QR
                 Bitmap qrMap = createQr(guest);
-
-                String imgName = "QR_" + UUID.randomUUID().toString();
-                String path = MediaStore.Images.Media.insertImage(getContentResolver(), qrMap, imgName, null);
-                Uri qrUri = Uri.parse(path);
-
+                Uri qrUri = getContentUriFromBitmap(qrMap, guest);
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("images/png");
+                shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                shareIntent.setClipData(ClipData.newRawUri("", qrUri));
                 shareIntent.putExtra(Intent.EXTRA_STREAM, qrUri);
                 shareIntent.putExtra(Intent.EXTRA_TEXT, guest.name + " " + guest.email + " " + guest.phone_number + guest.id);
                 shareIntent.setType("text/plain");
                 startActivity(Intent.createChooser(shareIntent, "Поделиться"));
-
-                // ЗАПЛАНИРОВАННОЕ УДАЛЕНИЕ (ФИКС)
-                new Handler(Looper.getMainLooper()).postDelayed(() -> getContentResolver().delete(qrUri, null, null), 15000);
             } catch (WriterException exp) {
                 StyleableToast.makeText(MeetInfoDesk.this, "Ошибка генерации QR", R.style.invalid_toast).show();
             }
@@ -162,6 +165,21 @@ public class MeetInfoDesk extends AppCompatActivity {
             }
         }
         return qrMap;
+    }
+
+    @SuppressLint("RestrictedApi")
+    private Uri getContentUriFromBitmap(Bitmap bitmap, Guest guest) {
+        final File file = new File(getCacheDir(), guest.id + ".png");
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return FileProvider.getUriForFile(this, "com.example.project_app.provider", file);
     }
 
     private void displayGuests() {
