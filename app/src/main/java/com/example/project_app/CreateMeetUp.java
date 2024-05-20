@@ -11,7 +11,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.Random;
 import java.util.UUID;
-
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class CreateMeetUp extends AppCompatActivity {

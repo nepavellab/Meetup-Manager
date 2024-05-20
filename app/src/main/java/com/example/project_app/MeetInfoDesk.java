@@ -171,10 +171,10 @@ public class MeetInfoDesk extends AppCompatActivity {
     private Uri getContentUriFromBitmap(Bitmap bitmap, Guest guest) {
         final File file = new File(getCacheDir(), guest.id + ".png");
         try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.flush();
-            fos.close();
+            FileOutputStream cacheStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, cacheStream);
+            cacheStream.flush();
+            cacheStream.close();
         } catch (IOException e) {
             e.printStackTrace();
             return null;

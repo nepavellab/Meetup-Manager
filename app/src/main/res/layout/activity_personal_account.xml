@@ -12,6 +12,7 @@
         android:id="@+id/control_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal">
 
         <Button
@@ -48,8 +49,11 @@
         <LinearLayout
             android:id="@+id/meet_up_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:layout_height="0dp"
+            android:layout_marginTop="20sp"
+            android:orientation="vertical" >
+
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

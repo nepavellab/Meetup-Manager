@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,10 +22,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import io.github.muddz.styleabletoast.StyleableToast;
+import java.util.Objects;
 
 public class PersonalAccount extends AppCompatActivity {
-    private DatabaseReference database;
-    private LinearLayout linearLayout;
+    private DatabaseReference database; // ссылка на базу данных
+    private LinearLayout linearLayout; // контейнер, динамически обновляющий карточки пользователя
+
+
+    // Функция открывает форму для создания мероприятия
     public void createMeet(View view) {
         startActivity(new Intent(this, CreateMeetUp.class));
     }
@@ -34,31 +37,36 @@ public class PersonalAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // В базе данных переходим в раздел текущего пользователя
         database = FirebaseDatabase.getInstance().getReference("Meets");
         setContentView(R.layout.activity_personal_account);
         linearLayout = findViewById(R.id.meet_up_list);
+
+        // Вывод всех карточек мероприятий пользователя
         displayCards();
     }
 
-    @SuppressLint("ResourceAsColor")
+    // Функция отображает приветственную надпись на экране
     private void setWelcomeLabel() {
         linearLayout.removeAllViews();
         TextView meet_label = new TextView(PersonalAccount.this);
         meet_label.setText(R.string.welcome_meets);
-        meet_label.setTextColor(R.color.white);
+        meet_label.setTextColor(0xFFFFFFFF);
         meet_label.setTextSize(30);
-        linearLayout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        meet_label.setGravity(Gravity.CENTER);
         meet_label.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
         linearLayout.addView(meet_label);
     }
 
+    @SuppressLint("InflateParams")
     private void meetCardPlacement(DataSnapshot dataSnapshot) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ConstraintLayout constraintLayout = (ConstraintLayout) inflater.inflate(R.layout.card_layout, null);
-        constraintLayout.setId(getNumericId(dataSnapshot.getKey()));
+        constraintLayout.setId(getNumericId(Objects.requireNonNull(dataSnapshot.getKey())));
 
         TextView name = constraintLayout.findViewById(R.id.meet_card_name);
-        name.setText(dataSnapshot.getValue(MeetUpCard.class).name);
+        name.setText(Objects.requireNonNull(dataSnapshot.getValue(MeetUpCard.class)).name);
 
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -101,6 +109,7 @@ public class PersonalAccount extends AppCompatActivity {
         linearLayout.addView(constraintLayout);
     }
 
+    // Функция отображения карточек мероприятий
     private void displayCards() {
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -112,7 +121,7 @@ public class PersonalAccount extends AppCompatActivity {
                 } else {
                     for (DataSnapshot db : snapshot.getChildren()) {
                         // Если карточка ещё не добавлена в контейнер (избежание повторной отрисовки)
-                        if (linearLayout.findViewById(getNumericId(db.getKey())) == null) {
+                        if (linearLayout.findViewById(getNumericId(Objects.requireNonNull(db.getKey()))) == null) {
                             // Добавление карточки мероприятия
                             meetCardPlacement(db);
                         }
@@ -127,12 +136,16 @@ public class PersonalAccount extends AppCompatActivity {
         });
     }
 
+    // Функция выхода из аккаунта
     public void logout(View view) {
+        // Разлогиниваем пользователя
         FirebaseAuth.getInstance().signOut();
+        // Переходим на страницу входа
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
+    // Функция возвращает числовое значение, записанное в строке id
     private int getNumericId(String full_meet_id) {
         return Integer.parseInt(full_meet_id.split("\\?")[2]);
     }

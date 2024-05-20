@@ -8,11 +8,25 @@
     android:background="@color/meet_black"
     tools:context=".Registration">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/hint_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150sp"
+        android:textAlignment="center"
+        android:text="@string/fill_info"
+        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="20sp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/registration_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50sp"
+        app:layout_constraintTop_toBottomOf="@+id/hint_label"
         android:orientation="vertical">
 
         <LinearLayout
@@ -22,11 +36,10 @@
 
             <ImageView
                 android:id="@+id/email_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_width="50sp"
+                android:layout_height="70sp"
                 android:layout_marginTop="20sp"
-                android:layout_marginStart="80sp"
+                android:layout_marginStart="20sp"
                 android:layout_marginEnd="10sp"
                 android:src="@drawable/user_email_icon"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -34,11 +47,11 @@
 
             <EditText
                 android:id="@+id/new_email"
-                android:layout_width="200sp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="70sp"
                 android:layout_marginTop="20sp"
-                android:layout_weight="2"
-                android:layout_marginEnd="80sp"
+                android:layout_marginEnd="20sp"
+                android:autofillHints="emailAddress"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/white"
@@ -52,11 +65,10 @@
 
             <ImageView
                 android:id="@+id/password_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_width="50sp"
+                android:layout_height="70sp"
                 android:layout_marginTop="30sp"
-                android:layout_marginStart="80sp"
+                android:layout_marginStart="20sp"
                 android:layout_marginEnd="10sp"
                 android:src="@drawable/password_icon"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -65,12 +77,12 @@
 
             <EditText
                 android:id="@+id/new_password"
-                android:layout_width="200sp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="70sp"
                 android:layout_marginTop="30sp"
-                android:layout_weight="2"
+                android:autofillHints="password"
                 android:inputType="textPassword"
-                android:layout_marginEnd="80sp"
+                android:layout_marginEnd="20sp"
                 android:hint="@string/password"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
@@ -86,11 +98,10 @@
 
             <ImageView
                 android:id="@+id/user_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_width="50sp"
+                android:layout_height="70sp"
                 android:layout_marginTop="30sp"
-                android:layout_marginStart="80sp"
+                android:layout_marginStart="20sp"
                 android:layout_marginEnd="10sp"
                 android:src="@drawable/user_icon"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -99,12 +110,12 @@
 
             <EditText
                 android:id="@+id/admin_name"
-                android:layout_width="200sp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="70sp"
                 android:layout_marginTop="30sp"
-                android:layout_weight="2"
+                android:autofillHints="text"
                 android:inputType="text"
-                android:layout_marginEnd="80sp"
+                android:layout_marginEnd="20sp"
                 android:hint="@string/full_admin_name"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
@@ -118,10 +129,13 @@
         android:id="@+id/create_admin_button"
         android:layout_width="match_parent"
         android:layout_height="80sp"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="20sp"
         android:background="@android:drawable/btn_default"
         android:text="@string/register"
         android:textSize="30sp"
         android:onClick="createAdmin"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_marginTop="50sp"
+        app:layout_constraintTop_toBottomOf="@+id/registration_form" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

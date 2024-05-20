@@ -2,6 +2,8 @@ package com.example.project_app;
 
 import java.io.Serializable;
 
+// ФОРМАТ ID ГОСТЯ: "строковый ID" + "?" + "имя мероприятия" + "?" + "цифровой id"
+
 public class Guest implements Serializable {
     public String id, name, email, phone_number;
 

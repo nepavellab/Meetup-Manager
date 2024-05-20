@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
@@ -14,14 +15,19 @@ import com.journeyapps.barcodescanner.ScanOptions;
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MainActivity extends AppCompatActivity {
+    // Обработчик сканирования QR кода
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
+                // Если информация была считана
                 if (result.getContents() != null) {
                     StyleableToast.makeText(this, "Сканирование прошло успешно", R.style.valid_toast).show();
+                } else {
+                    StyleableToast.makeText(this, "Неудачная попытка сканирования", R.style.invalid_toast).show();
                 }
             });
 
 
+    // Функция настраивает опции сканера и вызывает его
     public void qrRead(View view) {
         ScanOptions options = new ScanOptions();
         options.setPrompt("Поднесите QR к камере");
@@ -30,17 +36,28 @@ public class MainActivity extends AppCompatActivity {
         barcodeLauncher.launch(options);
     }
 
+    public void authorizationWithGoogle(View view) {
+
+    }
+
+    public void authorizationWithGMail(View view) {
+
+    }
+
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Проверить, входил ли пользователь в свой аккаунт
         checkUserAuthorization();
 
         setContentView(R.layout.activity_main);
 
-        TextView enter = findViewById(R.id.enter_view);
-        TextView register = findViewById(R.id.register_view);
+        Button enter = findViewById(R.id.enter_view);
+        Button register = findViewById(R.id.register_view);
+        TextView password_recovery = findViewById(R.id.forget_password);
 
+        password_recovery.setOnClickListener(view -> { recoverPassword(); });
         enter.setOnClickListener(view -> { enter(); });
         register.setOnClickListener(view -> { registerUser(); });
     }
@@ -48,36 +65,49 @@ public class MainActivity extends AppCompatActivity {
     private void enter() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+        // Получаем введённый почтовый адрес и пароль пользователя
         String email = ((EditText)findViewById(R.id.edit_email)).getText().toString();
         String password = ((EditText)findViewById(R.id.edit_password)).getText().toString();
 
+        // Если пользователь забыл ввести какие-либо данные и некоторые оставил поля пустыми
         if (email.isEmpty() || password.isEmpty()) {
             StyleableToast.makeText(this, "Не все поля заполнены", R.style.invalid_toast).show();
             return;
         }
 
+        // Проверка существования пользователя с указанным почтовым адресом и паролем
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
+                    // Если пользователь найден в базе
                     if (task.isSuccessful()) {
-                         startActivity(new Intent(this, PersonalAccount.class));
-                         finish();
+                        // Перейти в личный кабинет
+                        startActivity(new Intent(this, PersonalAccount.class));
+                        finish();
                     } else {
                         StyleableToast.makeText(this, "Неверный логин или пароль", R.style.invalid_toast).show();
                     }
                 });
     }
 
+    // Функция открывает форму регистрации для пользователя
     private void registerUser() {
         startActivity(new Intent(this, Registration.class));
-        finish();
     }
 
+    // Функция на этапе запуска приложения проверяет, авторизовался ли пользователь ранее
     private void checkUserAuthorization() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+        // Если пользователь уже выполнил вход в аккаунт ранее
         if (mAuth.getCurrentUser() != null) {
+            // Перейти в личный кабинет
             startActivity(new Intent(this, PersonalAccount.class));
             finish();
         }
+    }
+
+    //  Функция восстановления пароля пользователя
+    private void recoverPassword() {
+
     }
 }

@@ -3,6 +3,8 @@ package com.example.project_app;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+// ФОРМАТ ID МЕРОПРИЯТИЯ: "строковый ID" + "?" + "имя мероприятия" + "?" + "цифровой id"
+
 public class MeetUpCard implements Serializable {
     public String name, address, date, start_time, end_time;
 
