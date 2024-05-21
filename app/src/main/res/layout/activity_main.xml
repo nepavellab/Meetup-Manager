@@ -157,7 +157,7 @@
                     android:layout_marginTop="40sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/login_by"
+                    android:text="@string/auto_by"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="30sp"/>

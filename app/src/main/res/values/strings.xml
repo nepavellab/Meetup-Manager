@@ -26,7 +26,7 @@
     <string name="scan">Режим сканирования</string>
     <string name="full_admin_name">ФИО</string>
     <string name="forgot_password">Забыли пароль?</string>
-    <string name="login_by">Авторизоваться через:</string>
+    <string name="auto_by">Авторизоваться через:</string>
     <string name="logout">Выйти</string>
     <string name="add_meetup">Добавить мероприятие</string>
     <string name="fill_info">Заполните поля с информацией</string>

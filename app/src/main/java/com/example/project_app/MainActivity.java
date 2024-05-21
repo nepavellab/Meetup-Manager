@@ -8,7 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeResult;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -108,6 +114,21 @@ public class MainActivity extends AppCompatActivity {
 
     //  Функция восстановления пароля пользователя
     private void recoverPassword() {
+        String email = ((EditText)findViewById(R.id.edit_email)).getText().toString();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+        if (email.isEmpty()) {
+            StyleableToast.makeText(this, "Введите адрес электронной почты", R.style.invalid_toast).show();
+            return;
+        }
+
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        StyleableToast.makeText(this, "Письмо для восстановления пароля почту", R.style.valid_toast).show();
+                    } else {
+                        StyleableToast.makeText(this, "Что-то пошло не так :(", R.style.invalid_toast).show();
+                    }
+                });
     }
 }
