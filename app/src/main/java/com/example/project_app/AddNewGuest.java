@@ -56,9 +56,10 @@ public class AddNewGuest extends AppCompatActivity {
 
         // Получение ключа текущего мероприятия
         Bundle arguments = getIntent().getExtras();
+        assert arguments != null;
         KEY = arguments.getString("KEY");
         local_card = (MeetUpCard) arguments.getSerializable(MeetUpCard.class.getSimpleName());
-        database = FirebaseDatabase.getInstance().getReference("Meets").child(KEY).child("GUESTS");
+        database = FirebaseDatabase.getInstance().getReference("MEETS").child(KEY).child("GUESTS");
     }
 
     private boolean phoneNumberValidate(String phone_numb) { // проверка валидации корректна только для телефонных номеров РФ

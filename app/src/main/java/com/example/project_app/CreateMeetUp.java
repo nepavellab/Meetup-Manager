@@ -55,7 +55,7 @@ public class CreateMeetUp extends AppCompatActivity {
         startTime.setIs24HourView(true);
         endTime.setIs24HourView(true);
 
-        database = FirebaseDatabase.getInstance().getReference("Meets");
+        database = FirebaseDatabase.getInstance().getReference("MEETS");
     }
 
     // Форматирование строки даты к виду: "дд.мм.гггг"

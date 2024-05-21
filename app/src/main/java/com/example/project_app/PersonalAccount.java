@@ -8,13 +8,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,78 +42,10 @@ public class PersonalAccount extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // В базе данных переходим в раздел текущего пользователя
-        database = FirebaseDatabase.getInstance().getReference("Meets");
+        database = FirebaseDatabase.getInstance().getReference("MEETS");
         setContentView(R.layout.activity_personal_account);
         linearLayout = findViewById(R.id.meet_up_list);
 
-        // Вывод всех карточек мероприятий пользователя
-        displayCards();
-    }
-
-    // Функция отображает приветственную надпись на экране
-    private void setWelcomeLabel() {
-        linearLayout.removeAllViews();
-        TextView meet_label = new TextView(PersonalAccount.this);
-        meet_label.setText(R.string.welcome_meets);
-        meet_label.setTextColor(0xFFFFFFFF);
-        meet_label.setTextSize(30);
-        meet_label.setGravity(Gravity.CENTER);
-        meet_label.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
-        linearLayout.addView(meet_label);
-    }
-
-    @SuppressLint("InflateParams")
-    private void meetCardPlacement(DataSnapshot dataSnapshot) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ConstraintLayout constraintLayout = (ConstraintLayout) inflater.inflate(R.layout.card_layout, null);
-        constraintLayout.setId(getNumericId(Objects.requireNonNull(dataSnapshot.getKey())));
-
-        TextView name = constraintLayout.findViewById(R.id.meet_card_name);
-        name.setText(Objects.requireNonNull(dataSnapshot.getValue(MeetUpCard.class)).name);
-
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        params.bottomMargin = 25;
-        params.leftMargin = 15;
-        params.rightMargin = 15;
-
-        constraintLayout.setLayoutParams(params);
-
-        // Создание кнопки редактирования
-        Button edit_btn = constraintLayout.findViewById(R.id.edit_button);
-        edit_btn.setOnClickListener(view -> {
-            // Передаём данные о выбранном мероприятии
-            MeetUpCard card = dataSnapshot.getValue(MeetUpCard.class);
-            Intent current_card = new Intent(PersonalAccount.this, MeetInfoDesk.class);
-            current_card.putExtra(MeetUpCard.class.getSimpleName(), card);
-            // Передача ключа текущего мероприятия
-            current_card.putExtra("KEY", dataSnapshot.getKey());
-            startActivity(current_card);
-        });
-
-        // Создание кнопки удаления
-        Button delete_btn = constraintLayout.findViewById(R.id.delete_button);
-        delete_btn.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalAccount.this);
-            builder.setTitle(R.string.confirm_meet_delete)
-                    .setIcon(android.R.drawable.ic_delete)
-                    .setMessage("Удалить мероприятие " + name.getText().toString() + "?")
-                    .setPositiveButton(R.string.delete, (dialog, which) -> {
-                        // Удаление мероприятия и его карточки
-                        int numeric_id = getNumericId(dataSnapshot.getKey());
-                        database.child(dataSnapshot.getKey()).removeValue();
-                        linearLayout.removeView(findViewById(numeric_id));
-                        StyleableToast.makeText(this, "Мероприятие " + name.getText() + " удалено", R.style.valid_toast).show();
-                    })
-                    .setNegativeButton(R.string.cancellation, null)
-                    .create().show();
-        });
-
-        linearLayout.addView(constraintLayout);
-    }
-
-    // Функция отображения карточек мероприятий
-    private void displayCards() {
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -136,10 +71,81 @@ public class PersonalAccount extends AppCompatActivity {
         });
     }
 
+    // Функция отображает приветственную надпись на экране
+    private void setWelcomeLabel() {
+        linearLayout.removeAllViews();
+        TextView meet_label = new TextView(PersonalAccount.this);
+        meet_label.setText(R.string.welcome_meets);
+        meet_label.setTextColor(0xFFFFFFFF);
+        meet_label.setTextSize(30);
+        meet_label.setGravity(Gravity.CENTER);
+        meet_label.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+        linearLayout.addView(meet_label);
+    }
+
+    @SuppressLint({"InflateParams", "SetTextI18n"})
+    private void meetCardPlacement(DataSnapshot dataSnapshot) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ConstraintLayout constraintLayout = (ConstraintLayout) inflater.inflate(R.layout.card_layout, null);
+        constraintLayout.setId(getNumericId(Objects.requireNonNull(dataSnapshot.getKey())));
+
+        TextView name = constraintLayout.findViewById(R.id.meet_card_name);
+        name.setText(Objects.requireNonNull(dataSnapshot.getValue(MeetUpCard.class)).name);
+
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        params.bottomMargin = 100;
+        params.leftMargin = 70;
+        params.rightMargin = 70;
+
+        constraintLayout.setLayoutParams(params);
+
+        // Создание кнопки редактирования
+        ImageButton edit_btn = constraintLayout.findViewById(R.id.edit_button);
+        edit_btn.setOnClickListener(view -> {
+            // Передаём данные о выбранном мероприятии
+            MeetUpCard card = dataSnapshot.getValue(MeetUpCard.class);
+            Intent current_card = new Intent(PersonalAccount.this, MeetInfoDesk.class);
+            current_card.putExtra(MeetUpCard.class.getSimpleName(), card);
+            // Передача ключа текущего мероприятия
+            current_card.putExtra("KEY", dataSnapshot.getKey());
+            startActivity(current_card);
+        });
+
+        // Создание кнопки удаления
+        ImageButton delete_btn = constraintLayout.findViewById(R.id.delete_button);
+        delete_btn.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalAccount.this);
+            builder.setTitle(R.string.confirm_meet_delete)
+                    .setIcon(android.R.drawable.ic_delete)
+                    .setMessage("Удалить мероприятие " + name.getText().toString() + "?")
+                    .setPositiveButton(R.string.delete, (dialog, which) -> {
+                        // Удаление мероприятия и его карточки
+                        int numeric_id = getNumericId(dataSnapshot.getKey());
+                        database.child(dataSnapshot.getKey()).removeValue();
+                        linearLayout.removeView(findViewById(numeric_id));
+                        StyleableToast.makeText(this, "Мероприятие " + name.getText() + " удалено", R.style.valid_toast).show();
+                    })
+                    .setNegativeButton(R.string.cancellation, null)
+                    .create().show();
+        });
+
+        linearLayout.addView(constraintLayout);
+    }
+
     // Функция выхода из аккаунта
     public void logout(View view) {
         // Разлогиниваем пользователя
         FirebaseAuth.getInstance().signOut();
+        // Выход из Google аккаунта
+        GoogleSignInOptions googleOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(PersonalAccount.this, googleOptions);
+        googleSignInClient.signOut().addOnCompleteListener(PersonalAccount.this, task -> {
+
+        });
         // Переходим на страницу входа
         startActivity(new Intent(this, MainActivity.class));
         finish();

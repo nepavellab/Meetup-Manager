@@ -22,10 +22,10 @@ public class MeetUpCard implements Serializable {
                       String _start_time,
                       String _end_time) {
         guests = new ArrayList<>();
-        name       = _name;
-        address    = _address;
-        date       = _date;
-        start_time = _start_time;
-        end_time   = _end_time;
+        name        = _name;
+        address     = _address;
+        date        = _date;
+        start_time  = _start_time;
+        end_time    = _end_time;
     }
 }

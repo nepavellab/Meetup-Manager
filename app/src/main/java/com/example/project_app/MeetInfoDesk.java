@@ -6,12 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.InetAddresses;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,22 +20,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.collection.BuildConfig;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.Objects;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -63,11 +56,13 @@ public class MeetInfoDesk extends AppCompatActivity {
 
         Bundle meet_up_info = getIntent().getExtras();
         // Информация о текущем мероприятии
+        assert meet_up_info != null;
         local_card = (MeetUpCard) meet_up_info.getSerializable(MeetUpCard.class.getSimpleName());
         // Ключ текущего (кодовое слово) мероприятия для базы данных
         String KEY = meet_up_info.getString("KEY");
 
-        database = FirebaseDatabase.getInstance().getReference("Meets").child(KEY).child("GUESTS");
+        assert KEY != null;
+        database = FirebaseDatabase.getInstance().getReference("MEETS").child(KEY).child("GUESTS");
 
         TextView meet_name = findViewById(R.id.local_meet_name);
         meet_name.setText(local_card.name);
@@ -77,7 +72,29 @@ public class MeetInfoDesk extends AppCompatActivity {
 
         linearLayout = findViewById(R.id.guest_list);
 
-        displayGuests();
+        database.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Если мероприятие не имеет гостей
+                if (snapshot.getChildrenCount() == 0) {
+                    // Вывод приветственной надписи
+                    setWelcomeLabel();
+                } else {
+                    for (DataSnapshot db : snapshot.getChildren()) {
+                        // Если гостя ещё нет в списке
+                        if (linearLayout.findViewById(getNumericId(Objects.requireNonNull(db.getValue(Guest.class)).id)) == null) {
+                            guestCardPlacement(db);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //
+            }
+        });
     }
 
     @SuppressLint("ResourceAsColor")
@@ -100,7 +117,9 @@ public class MeetInfoDesk extends AppCompatActivity {
 
         Guest guest = dataSnapshot.getValue(Guest.class);
 
+        @SuppressLint("InflateParams")
         ConstraintLayout constraintLayout = (ConstraintLayout) inflater.inflate(R.layout.guest_card, null);
+        assert guest != null;
         constraintLayout.setId(getNumericId(guest.id));
 
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -176,36 +195,9 @@ public class MeetInfoDesk extends AppCompatActivity {
             cacheStream.flush();
             cacheStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
         return FileProvider.getUriForFile(this, "com.example.project_app.provider", file);
-    }
-
-    private void displayGuests() {
-        database.addValueEventListener(new ValueEventListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Если мероприятие не имеет гостей
-                if (snapshot.getChildrenCount() == 0) {
-                    // Вывод приветственной надписи
-                    setWelcomeLabel();
-                } else {
-                    for (DataSnapshot db : snapshot.getChildren()) {
-                        // Если гостя ещё нет в списке
-                        if (linearLayout.findViewById(getNumericId(db.getValue(Guest.class).id)) == null) {
-                            guestCardPlacement(db);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //
-            }
-        });
     }
 
     private int getNumericId(String full_guest_id) {

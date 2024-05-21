@@ -129,13 +129,11 @@
         android:id="@+id/create_admin_button"
         android:layout_width="match_parent"
         android:layout_height="80sp"
-        android:layout_marginStart="20sp"
-        android:layout_marginEnd="20sp"
+        android:alpha="0.9"
         android:background="@android:drawable/btn_default"
         android:text="@string/register"
         android:textSize="30sp"
         android:onClick="createAdmin"
-        android:layout_marginTop="50sp"
-        app:layout_constraintTop_toBottomOf="@+id/registration_form" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
