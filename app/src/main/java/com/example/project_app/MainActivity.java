@@ -73,10 +73,14 @@ public class MainActivity extends AppCompatActivity {
                     if (singInTask.isSuccessful()) {
                         startActivity(new Intent(this, PersonalAccount.class));
                         finish();
+                    } else {
+                        StyleableToast.makeText(this, "Пользователь с указанной почтой не зарегистрирован", R.style.invalid_toast).show();
                     }
                 });
             } catch (ApiException AE) {
-                StyleableToast.makeText(this, "Пользователь с указанной почтой не зарегистрирован", R.style.invalid_toast).show();
+                AE.printStackTrace();
+                // Появляется при нажатии кнопки назад
+                //StyleableToast.makeText(this, "Пользователь с указанной почтой не зарегистрирован", R.style.invalid_toast).show();
             }
         }
     }
