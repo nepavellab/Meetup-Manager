@@ -30,4 +30,5 @@
     <string name="logout">Выйти</string>
     <string name="add_meetup">Добавить мероприятие</string>
     <string name="fill_info">Заполните поля с информацией</string>
+    <string name="default_web_client_id">616410057686-0qpje81ndcnvar4k184bgifao828mvou.apps.googleusercontent.com</string>
 </resources>

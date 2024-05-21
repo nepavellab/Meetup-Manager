@@ -8,14 +8,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.ActionCodeResult;
-import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import io.github.muddz.styleabletoast.StyleableToast;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 if (result.getContents() != null) {
                     StyleableToast.makeText(this, "Сканирование прошло успешно", R.style.valid_toast).show();
                 } else {
+                    // Появляется при обычном выходе из режима сканирования
                     StyleableToast.makeText(this, "Неудачная попытка сканирования", R.style.invalid_toast).show();
                 }
             });
@@ -42,12 +46,39 @@ public class MainActivity extends AppCompatActivity {
         barcodeLauncher.launch(options);
     }
 
-    public void authorizationWithGoogle(View view) {
+    public void authorizationWithGoogle(View view) throws ApiException {
+        GoogleSignInOptions googleOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
 
+        GoogleSignInClient signInClient = GoogleSignIn.getClient(this, googleOptions);
+        Intent intent = signInClient.getSignInIntent();
+        startActivityForResult(intent, 123);
     }
 
-    public void authorizationWithGMail(View view) {
+    @Override
+    protected void onActivityResult(int request_code, int result_code, @Nullable Intent data) {
+        super.onActivityResult(request_code, result_code, data);
 
+        if (request_code == 123) {
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            Task<GoogleSignInAccount> singInTask = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = singInTask.getResult(ApiException.class);
+
+                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
+                mAuth.signInWithCredential(credential).addOnSuccessListener(authResult -> {
+                    if (singInTask.isSuccessful()) {
+                        startActivity(new Intent(this, PersonalAccount.class));
+                        finish();
+                    }
+                });
+            } catch (ApiException AE) {
+                StyleableToast.makeText(this, "Пользователь с указанной почтой не зарегистрирован", R.style.invalid_toast).show();
+            }
+        }
     }
 
     @SuppressLint("ResourceAsColor")
