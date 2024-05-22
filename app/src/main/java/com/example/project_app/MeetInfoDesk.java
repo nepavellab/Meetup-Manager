@@ -39,12 +39,14 @@ public class MeetInfoDesk extends AppCompatActivity {
     private DatabaseReference database;
     private LinearLayout linearLayout;
     private MeetUpCard local_card;
+    private String MEET_KEY;
 
     public void addGuest(View view) {
         Intent intent = new Intent(this, AddNewGuest.class);
-        intent.putExtra("KEY", database.getParent().getKey());
+        intent.putExtra("KEY", Objects.requireNonNull(database.getParent()).getKey());
         intent.putExtra(MeetUpCard.class.getSimpleName(), local_card);
         startActivity(intent);
+        finish();
     }
 
     @SuppressLint("ResourceAsColor")
@@ -60,14 +62,16 @@ public class MeetInfoDesk extends AppCompatActivity {
         assert meet_up_info != null;
         local_card = (MeetUpCard) meet_up_info.getSerializable(MeetUpCard.class.getSimpleName());
         // Ключ текущего (кодовое слово) мероприятия для базы данных
-        String KEY = meet_up_info.getString("KEY");
+        MEET_KEY = meet_up_info.getString("KEY");
 
-        assert KEY != null;
+        assert MEET_KEY != null;
         database = FirebaseDatabase.getInstance()
                 .getReference("USERS")
-                .child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .child(Objects.requireNonNull(
+                        Objects.requireNonNull(mAuth.getCurrentUser()).getEmail()).replaceAll("[.#$\\[\\]]", "")
+                )
                 .child("MEETS")
-                .child(KEY)
+                .child(MEET_KEY)
                 .child("GUESTS");
 
         TextView meet_name = findViewById(R.id.local_meet_name);
@@ -83,13 +87,10 @@ public class MeetInfoDesk extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Если мероприятие не имеет гостей
-                if (snapshot.getChildrenCount() == 0) {
-                    // Вывод приветственной надписи
-                    setWelcomeLabel();
-                } else {
+                if (snapshot.getChildrenCount() != 0) {
                     for (DataSnapshot db : snapshot.getChildren()) {
                         // Если гостя ещё нет в списке
-                        if (linearLayout.findViewById(getNumericId(Objects.requireNonNull(db.getValue(Guest.class)).id)) == null) {
+                        if (linearLayout.findViewById(Integer.parseInt(Objects.requireNonNull(db.getValue(Guest.class)).id)) == null) {
                             guestCardPlacement(db);
                         }
                     }
@@ -103,21 +104,6 @@ public class MeetInfoDesk extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("ResourceAsColor")
-    private void setWelcomeLabel() {
-        linearLayout.removeAllViews();
-        TextView meet_label = new TextView(MeetInfoDesk.this);
-        meet_label.setText(R.string.guests_here);
-        meet_label.setTextColor(R.color.navy);
-        meet_label.setTextSize(30);
-        meet_label.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
-        meet_label.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
-        ));
-
-        linearLayout.addView(meet_label);
-    }
-
     private void guestCardPlacement(DataSnapshot dataSnapshot) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -126,7 +112,7 @@ public class MeetInfoDesk extends AppCompatActivity {
         @SuppressLint("InflateParams")
         ConstraintLayout constraintLayout = (ConstraintLayout) inflater.inflate(R.layout.guest_card, null);
         assert guest != null;
-        constraintLayout.setId(getNumericId(guest.id));
+        constraintLayout.setId(Integer.parseInt(guest.id));
 
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -145,6 +131,17 @@ public class MeetInfoDesk extends AppCompatActivity {
         TextView guest_phone_number = constraintLayout.findViewById(R.id.guest_phone_number);
         guest_phone_number.setText(guest.phone_number);
 
+        ImageButton edit_guest = constraintLayout.findViewById(R.id.edit_guest_card);
+        edit_guest.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EditUser.class);
+            intent.putExtra("MEET_KEY", MEET_KEY);
+            intent.putExtra("GUEST_KEY", guest.id);
+            intent.putExtra(MeetUpCard.class.getSimpleName(), local_card);
+            intent.putExtra(Guest.class.getSimpleName(), guest);
+            startActivity(intent);
+            finish();
+        });
+
         ImageButton delete_btn = constraintLayout.findViewById(R.id.delete_guest_button);
         delete_btn.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MeetInfoDesk.this);
@@ -154,7 +151,7 @@ public class MeetInfoDesk extends AppCompatActivity {
                     .setPositiveButton(R.string.delete, (dialog, which) -> {
                         // Удаление гостя
                         database.child(guest.id).removeValue();
-                        linearLayout.removeView(findViewById(getNumericId(guest.id)));
+                        linearLayout.removeView(findViewById(Integer.parseInt(guest.id)));
                         StyleableToast.makeText(MeetInfoDesk.this, "Гость " + guest.name + " успешно удалён", R.style.valid_toast).show();
                     })
                     .setNegativeButton(R.string.cancellation, null)
@@ -204,9 +201,5 @@ public class MeetInfoDesk extends AppCompatActivity {
             return null;
         }
         return FileProvider.getUriForFile(this, "com.example.project_app.provider", file);
-    }
-
-    private int getNumericId(String full_guest_id) {
-        return Integer.parseInt(full_guest_id.split("\\?")[2]);
     }
 }

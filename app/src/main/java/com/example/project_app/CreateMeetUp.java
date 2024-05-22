@@ -7,14 +7,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.Objects;
 import java.util.Random;
-import java.util.UUID;
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class CreateMeetUp extends AppCompatActivity {
@@ -64,7 +61,11 @@ public class CreateMeetUp extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance()
                 .getReference("USERS")
-                .child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .child(Objects.requireNonNull(
+                        Objects.requireNonNull(
+                                Objects.requireNonNull(mAuth.getCurrentUser()).getEmail()).replaceAll("[.#$\\[\\]]", "")
+                        )
+                )
                 .child("MEETS");
     }
 
@@ -82,6 +83,6 @@ public class CreateMeetUp extends AppCompatActivity {
     }
 
     private String generateMeetId(String name) {
-        return UUID.randomUUID().toString() + "?" + name + "?" + new Random().nextInt(Integer.MAX_VALUE - 10);
+        return Integer.toString(new Random().nextInt(Integer.MAX_VALUE - 10));
     }
 }

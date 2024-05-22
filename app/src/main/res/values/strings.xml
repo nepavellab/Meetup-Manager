@@ -31,6 +31,9 @@
     <string name="add_meetup">Добавить мероприятие</string>
     <string name="fill_info">Заполните поля с информацией</string>
     <string name="add">Добавить</string>
+    <string name="save">Сохранить</string>
+    <string name="what">Что?</string>
+    <string name="where">Где?</string>
 
     <!-- SHA-1 KEY FOR GOOGLE API -->
     <string name="default_web_client_id">616410057686-0qpje81ndcnvar4k184bgifao828mvou.apps.googleusercontent.com</string>

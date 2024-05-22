@@ -7,10 +7,11 @@
     style="@style/cardStyle"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/edit_guest_card"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:backgroundTint="@color/card_color"
         android:src="@drawable/edit_guest_card_icon"
         android:layout_marginEnd="10sp"
         app:layout_constraintRight_toRightOf="parent" />
@@ -35,10 +36,12 @@
             android:id="@+id/guest_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:maxHeight="48sp"
+            android:scrollbars="vertical"
             android:layout_weight="3"
             android:layout_marginTop="10sp"
             android:layout_marginEnd="30sp"
-            android:fontFamily="@font/bruno_acesc_regular"
+            android:fontFamily="@font/rem_variablefont_wght"
             android:textAlignment="textStart"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -67,6 +70,8 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10sp"
             android:textAlignment="textStart"
+            android:maxHeight="48sp"
+            android:scrollbars="vertical"
             android:layout_weight="3"
             android:layout_marginEnd="30sp"
             android:fontFamily="@font/rem_variablefont_wght"
@@ -96,8 +101,10 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10sp"
             android:textAlignment="textStart"
+            android:maxHeight="48sp"
+            android:scrollbars="vertical"
             android:layout_weight="3"
-            android:fontFamily="@font/orbitron_variable_wght"
+            android:fontFamily="@font/rem_variablefont_wght"
             android:layout_marginEnd="30sp"
             android:textColor="@color/white"
             android:textSize="20sp" />

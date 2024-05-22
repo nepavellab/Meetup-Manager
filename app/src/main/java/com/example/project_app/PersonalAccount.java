@@ -31,7 +31,6 @@ public class PersonalAccount extends AppCompatActivity {
     private DatabaseReference database; // ссылка на базу данных
     private LinearLayout linearLayout; // контейнер, динамически обновляющий карточки пользователя
 
-
     // Функция открывает форму для создания мероприятия
     public void createMeet(View view) {
         startActivity(new Intent(this, CreateMeetUp.class));
@@ -45,7 +44,11 @@ public class PersonalAccount extends AppCompatActivity {
         // В базе данных переходим в раздел текущего пользователя
         database = FirebaseDatabase.getInstance()
                 .getReference("USERS")
-                .child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .child(Objects.requireNonNull(
+                        Objects.requireNonNull(
+                                Objects.requireNonNull(mAuth.getCurrentUser()).getEmail()).replaceAll("[.#$\\[\\]]", "")
+                        )
+                )
                 .child("MEETS");
         setContentView(R.layout.activity_personal_account);
         linearLayout = findViewById(R.id.meet_up_list);
@@ -54,13 +57,10 @@ public class PersonalAccount extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Если в базе данных нет мероприятий
-                if (snapshot.getChildrenCount() == 0) {
-                    // Вывод приглашения к созданию мероприятия
-                    setWelcomeLabel();
-                } else {
+                if (snapshot.getChildrenCount() != 0) {
                     for (DataSnapshot db : snapshot.getChildren()) {
                         // Если карточка ещё не добавлена в контейнер (избежание повторной отрисовки)
-                        if (linearLayout.findViewById(getNumericId(Objects.requireNonNull(db.getKey()))) == null) {
+                        if (linearLayout.findViewById(Integer.parseInt(Objects.requireNonNull(db.getKey()))) == null) {
                             // Добавление карточки мероприятия
                             meetCardPlacement(db);
                         }
@@ -75,23 +75,11 @@ public class PersonalAccount extends AppCompatActivity {
         });
     }
 
-    // Функция отображает приветственную надпись на экране
-    private void setWelcomeLabel() {
-        linearLayout.removeAllViews();
-        TextView meet_label = new TextView(PersonalAccount.this);
-        meet_label.setText(R.string.welcome_meets);
-        meet_label.setTextColor(0xFFFFFFFF);
-        meet_label.setTextSize(30);
-        meet_label.setGravity(Gravity.CENTER);
-        meet_label.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
-        linearLayout.addView(meet_label);
-    }
-
     @SuppressLint({"InflateParams", "SetTextI18n"})
     private void meetCardPlacement(DataSnapshot dataSnapshot) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ConstraintLayout constraintLayout = (ConstraintLayout) inflater.inflate(R.layout.card_layout, null);
-        constraintLayout.setId(getNumericId(Objects.requireNonNull(dataSnapshot.getKey())));
+        constraintLayout.setId(Integer.parseInt(Objects.requireNonNull(dataSnapshot.getKey())));
 
         TextView name = constraintLayout.findViewById(R.id.meet_card_name);
         name.setText(Objects.requireNonNull(dataSnapshot.getValue(MeetUpCard.class)).name);
@@ -125,9 +113,8 @@ public class PersonalAccount extends AppCompatActivity {
                     .setMessage("Удалить мероприятие " + name.getText().toString() + "?")
                     .setPositiveButton(R.string.delete, (dialog, which) -> {
                         // Удаление мероприятия и его карточки
-                        int numeric_id = getNumericId(dataSnapshot.getKey());
                         database.child(dataSnapshot.getKey()).removeValue();
-                        linearLayout.removeView(findViewById(numeric_id));
+                        linearLayout.removeView(findViewById(Integer.parseInt(dataSnapshot.getKey())));
                         StyleableToast.makeText(this, "Мероприятие " + name.getText() + " удалено", R.style.valid_toast).show();
                     })
                     .setNegativeButton(R.string.cancellation, null)
@@ -153,10 +140,5 @@ public class PersonalAccount extends AppCompatActivity {
         // Переходим на страницу входа
         startActivity(new Intent(this, MainActivity.class));
         finish();
-    }
-
-    // Функция возвращает числовое значение, записанное в строке id
-    private int getNumericId(String full_meet_id) {
-        return Integer.parseInt(full_meet_id.split("\\?")[2]);
     }
 }

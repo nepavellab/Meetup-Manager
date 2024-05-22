@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/meet_black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddNewGuest">
+    tools:context=".EditUser"
+    android:background="@color/meet_black" >
 
     <ImageView
         android:id="@+id/main_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/create_user_icon"
+        android:src="@drawable/update_user_icon"
         android:layout_marginTop="50sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -41,7 +41,7 @@
                 android:src="@drawable/user_email_icon" />
 
             <EditText
-                android:id="@+id/guest_email_input"
+                android:id="@+id/update_email"
                 android:layout_width="match_parent"
                 android:layout_height="70sp"
                 android:layout_marginTop="20sp"
@@ -68,7 +68,7 @@
                 android:src="@drawable/phone_number_black_icon" />
 
             <EditText
-                android:id="@+id/guest_phone_input"
+                android:id="@+id/update_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="70sp"
                 android:layout_marginTop="30sp"
@@ -98,7 +98,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/password_icon" />
 
             <EditText
-                android:id="@+id/guest_name_input"
+                android:id="@+id/update_guest_name"
                 android:layout_width="match_parent"
                 android:layout_height="70sp"
                 android:layout_marginTop="30sp"
@@ -112,16 +112,15 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/add_click"
+        android:id="@+id/create_admin_button"
         android:layout_width="match_parent"
         android:layout_height="80sp"
         android:alpha="0.9"
-        android:text="@string/add"
         android:background="@android:drawable/btn_default"
-        android:textSize="25sp"
-        android:onClick="addGuestClick"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/save"
+        android:textSize="30sp"
+        android:onClick="saveUpdates"
         app:layout_constraintBottom_toBottomOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

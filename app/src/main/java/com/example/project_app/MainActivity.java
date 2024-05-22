@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import java.util.HashMap;
+import java.util.Objects;
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MainActivity extends AppCompatActivity {
@@ -80,9 +81,12 @@ public class MainActivity extends AppCompatActivity {
                         userMap.put("user_id", user.getUid());
                         userMap.put("user_name", user.getDisplayName());
                         userMap.put("user_email", user.getEmail());
+
                         database.getReference()
                                 .child("USERS")
-                                .child(user.getUid())
+                                .child(Objects.requireNonNull(
+                                        Objects.requireNonNull(user.getEmail()).replaceAll("[.#$\\[\\]]", ""))
+                                )
                                 .setValue(userMap);
 
                         startActivity(new Intent(this, PersonalAccount.class));

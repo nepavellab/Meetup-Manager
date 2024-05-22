@@ -8,9 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.HashMap;
-
+import java.util.Objects;
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class Registration extends AppCompatActivity {
@@ -42,7 +41,10 @@ public class Registration extends AppCompatActivity {
                         userMap.put("user_id", user.getUid());
                         userMap.put("user_name", full_name);
                         userMap.put("user_email", user.getEmail());
-                        database.getReference().child("USERS").setValue(userMap);
+                        database.getReference()
+                                .child("USERS")
+                                .child(Objects.requireNonNull(user.getEmail()).replaceAll("[.#$\\[\\]]", ""))
+                                .setValue(userMap);
 
                         startActivity(new Intent(this, MainActivity.class));
                         finish();

@@ -31,7 +31,7 @@ public class AddNewGuest extends AppCompatActivity {
             phone_numb.isEmpty()) {
             StyleableToast.makeText(this, "Не все поля заполнены!", R.style.invalid_toast).show();
             return;
-        } else if (!phoneNumberValidate(guest_phone.getText().toString()))  { // номер телефона не валидный
+        } else if (!phoneNumberValidate(phone_numb))  { // номер телефона не валидный
             StyleableToast.makeText(this, "Указанный номер телефона не является корретным", R.style.invalid_toast).show();
             return;
         }
@@ -48,7 +48,6 @@ public class AddNewGuest extends AppCompatActivity {
 
         Intent intent = new Intent(this, MeetInfoDesk.class);
         intent.putExtra("KEY", KEY);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(MeetUpCard.class.getSimpleName(), local_card);
         startActivity(intent);
         finish();
@@ -68,7 +67,11 @@ public class AddNewGuest extends AppCompatActivity {
         local_card = (MeetUpCard) arguments.getSerializable(MeetUpCard.class.getSimpleName());
         database = FirebaseDatabase.getInstance()
                 .getReference("USERS")
-                .child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .child(Objects.requireNonNull(
+                        Objects.requireNonNull(
+                                Objects.requireNonNull(mAuth.getCurrentUser()).getEmail()).replaceAll("[.#$\\[\\]]", "")
+                        )
+                )
                 .child("MEETS")
                 .child(KEY)
                 .child("GUESTS");
@@ -79,6 +82,6 @@ public class AddNewGuest extends AppCompatActivity {
     }
 
     private String generateUserId(String name) {
-        return UUID.randomUUID().toString() + "?" + name + "?" + new Random().nextInt(Integer.MAX_VALUE - 10);
+        return Integer.toString(new Random().nextInt(Integer.MAX_VALUE - 10));
     }
 }
