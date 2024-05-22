@@ -7,8 +7,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import io.github.muddz.styleabletoast.StyleableToast;
@@ -47,6 +51,9 @@ public class CreateMeetUp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
         setContentView(R.layout.activity_create_meet_up);
         TimePicker startTime = findViewById(R.id.meet_start_time);
         TimePicker endTime = findViewById(R.id.meet_end_time);
@@ -55,7 +62,10 @@ public class CreateMeetUp extends AppCompatActivity {
         startTime.setIs24HourView(true);
         endTime.setIs24HourView(true);
 
-        database = FirebaseDatabase.getInstance().getReference("MEETS");
+        database = FirebaseDatabase.getInstance()
+                .getReference("USERS")
+                .child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .child("MEETS");
     }
 
     // Форматирование строки даты к виду: "дд.мм.гггг"

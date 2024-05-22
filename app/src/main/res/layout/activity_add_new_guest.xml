@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="80sp"
         android:alpha="0.9"
-        android:text="@string/add_guest"
+        android:text="@string/add"
         android:background="@android:drawable/btn_default"
         android:textSize="25sp"
         android:onClick="addGuestClick"

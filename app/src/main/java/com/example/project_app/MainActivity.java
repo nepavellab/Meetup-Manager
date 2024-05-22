@@ -18,12 +18,16 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
+import java.util.HashMap;
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MainActivity extends AppCompatActivity {
+    private FirebaseDatabase database;
     // Обработчик сканирования QR кода
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
@@ -66,11 +70,21 @@ public class MainActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> singInTask = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = singInTask.getResult(ApiException.class);
-
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
                 mAuth.signInWithCredential(credential).addOnSuccessListener(authResult -> {
                     if (singInTask.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        HashMap<String, Object> userMap = new HashMap<>();
+                        assert user != null;
+                        userMap.put("user_id", user.getUid());
+                        userMap.put("user_name", user.getDisplayName());
+                        userMap.put("user_email", user.getEmail());
+                        database.getReference()
+                                .child("USERS")
+                                .child(user.getUid())
+                                .setValue(userMap);
+
                         startActivity(new Intent(this, PersonalAccount.class));
                         finish();
                     } else {
@@ -91,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         checkUserAuthorization();
 
         setContentView(R.layout.activity_main);
+
+        database = FirebaseDatabase.getInstance();
 
         Button enter = findViewById(R.id.enter_view);
         Button register = findViewById(R.id.register_view);

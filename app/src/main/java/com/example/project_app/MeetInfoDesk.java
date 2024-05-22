@@ -14,12 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +33,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
-
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MeetInfoDesk extends AppCompatActivity {
@@ -54,6 +53,8 @@ public class MeetInfoDesk extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meet_info_desk);
 
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
         Bundle meet_up_info = getIntent().getExtras();
         // Информация о текущем мероприятии
         assert meet_up_info != null;
@@ -62,7 +63,12 @@ public class MeetInfoDesk extends AppCompatActivity {
         String KEY = meet_up_info.getString("KEY");
 
         assert KEY != null;
-        database = FirebaseDatabase.getInstance().getReference("MEETS").child(KEY).child("GUESTS");
+        database = FirebaseDatabase.getInstance()
+                .getReference("USERS")
+                .child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .child("MEETS")
+                .child(KEY)
+                .child("GUESTS");
 
         TextView meet_name = findViewById(R.id.local_meet_name);
         meet_name.setText(local_card.name);
@@ -124,9 +130,9 @@ public class MeetInfoDesk extends AppCompatActivity {
 
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        params.bottomMargin = 25;
-        params.leftMargin = 15;
-        params.rightMargin = 15;
+        params.bottomMargin = 100;
+        params.leftMargin = 70;
+        params.rightMargin = 70;
 
         constraintLayout.setLayoutParams(params);
 
@@ -155,7 +161,7 @@ public class MeetInfoDesk extends AppCompatActivity {
                     .create().show();
         });
 
-        Button generate_qr_btn = constraintLayout.findViewById(R.id.generate_qr);
+        ImageButton generate_qr_btn = constraintLayout.findViewById(R.id.generate_qr);
         generate_qr_btn.setOnClickListener(view -> {
             try {
                 Bitmap qrMap = createQr(guest);

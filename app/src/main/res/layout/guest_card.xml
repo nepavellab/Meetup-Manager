@@ -8,87 +8,132 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/guest_icon"
+        android:id="@+id/edit_guest_card"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/guest_icon"
-        android:layout_marginTop="80sp"
-        android:layout_marginLeft="10sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_height="match_parent"
+        android:src="@drawable/edit_guest_card_icon"
+        android:layout_marginEnd="10sp"
+        app:layout_constraintRight_toRightOf="parent" />
 
-    <TextView
-        android:id="@+id/guest_name"
-        android:layout_width="0dp"
-        android:layout_height="45sp"
-        android:layout_marginTop="20sp"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight="20sp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:background="@drawable/text_view_background"
-        app:layout_constraintLeft_toRightOf="@+id/guest_icon"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_marginEnd="70sp"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guest_card"
+        android:id="@+id/name_line"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/guest_email"
-        android:layout_width="0dp"
-        android:layout_height="45sp"
-        android:layout_marginTop="20sp"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight="20sp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:background="@drawable/text_view_background"
-        app:layout_constraintLeft_toRightOf="@+id/guest_icon"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guest_name" />
+        <ImageView
+            android:id="@+id/guest_card_icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/guest_icon"
+            android:layout_marginStart="10sp"
+            android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/guest_phone_number"
-        android:layout_width="0dp"
-        android:layout_height="45sp"
-        android:layout_marginTop="20sp"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight="20sp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:background="@drawable/text_view_background"
-        app:layout_constraintLeft_toRightOf="@+id/guest_icon"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guest_email" />
+        <TextView
+            android:id="@+id/guest_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_marginTop="10sp"
+            android:layout_marginEnd="30sp"
+            android:fontFamily="@font/bruno_acesc_regular"
+            android:textAlignment="textStart"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/generate_qr"
-        android:layout_width="250sp"
-        android:layout_height="0dp"
-        android:text="@string/send_QR"
-        android:textSize="30sp"
-        android:onClick="addGuest"
-        android:background="@color/zxing_transparent"
-        android:layout_marginTop="20sp"
-        android:layout_marginRight="70sp"
-        android:layout_marginLeft="15sp"
-        app:layout_constraintTop_toBottomOf="@id/guest_phone_number"
-        app:layout_constraintLeft_toLeftOf="parent" />
+    <LinearLayout
+        android:id="@+id/email_line"
+        android:layout_marginEnd="70sp"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guest_card"
+        app:layout_constraintTop_toBottomOf="@+id/name_line"
+        android:layout_marginTop="10sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
 
-    <ImageButton
-        android:id="@+id/delete_guest_button"
-        android:layout_width="65dp"
-        android:layout_height="60dp"
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/guest_card_email_icon"
+            android:layout_marginStart="10sp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/guest_email"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10sp"
+            android:textAlignment="textStart"
+            android:layout_weight="3"
+            android:layout_marginEnd="30sp"
+            android:fontFamily="@font/rem_variablefont_wght"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/phone_line"
+        android:layout_marginTop="10sp"
+        android:layout_marginEnd="70sp"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guest_card"
+        app:layout_constraintTop_toBottomOf="@+id/email_line"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/guest_card_phone_icon"
+            android:layout_marginStart="10sp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/guest_phone_number"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10sp"
+            android:textAlignment="textStart"
+            android:layout_weight="3"
+            android:fontFamily="@font/orbitron_variable_wght"
+            android:layout_marginEnd="30sp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_marginTop="20sp"
-        android:layout_weight="2"
-        android:layout_marginRight="35sp"
-        android:layout_marginBottom="10sp"
-        android:background="@color/meet_black"
-        android:src="@drawable/delete_icon"
-        app:layout_constraintLeft_toRightOf="@id/generate_qr"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guest_phone_number" />-
+        app:layout_constraintTop_toBottomOf="@+id/phone_line"
+        android:layout_width="match_parent"
+        android:layout_height="75sp"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/generate_qr"
+            android:layout_width="0dp"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/send_qr_icon"
+            android:background="@drawable/button_frame"
+            android:onClick="addGuest"
+            android:layout_weight="2"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp" />
+
+        <ImageButton
+            android:id="@+id/delete_guest_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10sp"
+            android:layout_weight="2"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/button_frame"
+            android:src="@drawable/delete_icon" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

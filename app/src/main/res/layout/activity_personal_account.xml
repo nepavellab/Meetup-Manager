@@ -8,37 +8,30 @@
     android:layout_height="match_parent"
     tools:context=".PersonalAccount">
 
-    <LinearLayout
-        android:id="@+id/control_line"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <Button
+        android:layout_width="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginStart="10sp"
+        android:textAlignment="textStart"
+        android:backgroundTint="@color/meet_black"
+        android:layout_marginTop="15sp"
+        android:onClick="logout"
+        android:text="@string/logout"/>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:textSize="25sp"
-            android:backgroundTint="@color/meet_black"
-            android:layout_marginTop="15sp"
-            android:onClick="logout"
-            android:layout_marginEnd="50sp"
-            android:text="@string/logout"/>
-
-        <ImageButton
-            android:id="@+id/add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="15sp"
-            android:background="@color/meet_black"
-            android:onClick="createMeet"
-            android:layout_marginStart="150sp"
-            android:src="@drawable/add_icon"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="15sp"
+        android:background="@drawable/round"
+        android:onClick="createMeet"
+        android:src="@drawable/add_icon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -46,7 +39,7 @@
         android:layout_marginTop="15sp"
         android:layout_marginBottom="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/control_line">
+        app:layout_constraintTop_toBottomOf="@id/add_button">
 
         <LinearLayout
             android:id="@+id/meet_up_list"

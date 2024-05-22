@@ -40,9 +40,13 @@ public class PersonalAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         // В базе данных переходим в раздел текущего пользователя
-        database = FirebaseDatabase.getInstance().getReference("MEETS");
+        database = FirebaseDatabase.getInstance()
+                .getReference("USERS")
+                .child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .child("MEETS");
         setContentView(R.layout.activity_personal_account);
         linearLayout = findViewById(R.id.meet_up_list);
 

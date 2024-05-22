@@ -24,11 +24,14 @@
     <string name="register">Зарегистрироваться</string>
     <string name="intro">Добро пожаловать в\nMeetup Manager!</string>
     <string name="scan">Режим сканирования</string>
-    <string name="full_admin_name">ФИО</string>
+    <string name="full_admin_name">ФИО (логин)</string>
     <string name="forgot_password">Забыли пароль?</string>
     <string name="auto_by">Авторизоваться через:</string>
     <string name="logout">Выйти</string>
     <string name="add_meetup">Добавить мероприятие</string>
     <string name="fill_info">Заполните поля с информацией</string>
+    <string name="add">Добавить</string>
+
+    <!-- SHA-1 KEY FOR GOOGLE API -->
     <string name="default_web_client_id">616410057686-0qpje81ndcnvar4k184bgifao828mvou.apps.googleusercontent.com</string>
 </resources>

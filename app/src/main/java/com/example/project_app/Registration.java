@@ -6,14 +6,23 @@ import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class Registration extends AppCompatActivity {
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    private FirebaseDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        database = FirebaseDatabase.getInstance();
     }
 
     public void createAdmin(View view) {
@@ -24,7 +33,17 @@ public class Registration extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                    StyleableToast.makeText(this, "Регистрация прошла успешно", R.style.valid_toast).show();
+                        StyleableToast.makeText(this, "Регистрация прошла успешно", R.style.valid_toast).show();
+
+                        FirebaseUser user = mAuth.getCurrentUser();
+
+                        HashMap<String, Object> userMap = new HashMap<>();
+                        assert user != null;
+                        userMap.put("user_id", user.getUid());
+                        userMap.put("user_name", full_name);
+                        userMap.put("user_email", user.getEmail());
+                        database.getReference().child("USERS").setValue(userMap);
+
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } else {
