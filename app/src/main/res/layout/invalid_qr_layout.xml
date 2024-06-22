@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/prime_red"
+    android:id="@+id/invalid_qr_layout"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/invalid_status_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="150sp" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/invalid_qr_icon" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/invalid_info_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="15sp"
+        android:layout_marginStart="15sp"
+        android:layout_marginEnd="15sp"
+        android:fontFamily="@font/rem_variablefont_wght"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/invalid_status_icon" />
+</androidx.constraintlayout.widget.ConstraintLayout>

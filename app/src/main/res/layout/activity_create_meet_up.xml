@@ -17,6 +17,7 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25sp"
+        android:fontFamily="@font/rem_variablefont_wght"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,6 +29,7 @@
         android:id="@+id/scroll_data"
         app:layout_constraintTop_toBottomOf="@+id/info_label"
         app:layout_constraintBottom_toTopOf="@+id/create_click"
+        android:layout_marginBottom="10sp"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -36,45 +38,67 @@
             android:layout_gravity="top"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/meet_naming"
+            <LinearLayout
+                android:id="@+id/name_layout"
                 android:layout_width="match_parent"
-                android:layout_height="45sp"
-                android:layout_marginTop="30sp"
-                android:layout_marginLeft="10sp"
-                android:layout_marginRight="10sp"
-                android:hint="@string/input_title"
-                android:inputType="text"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="25sp"
-                android:background="@drawable/edit_text_background"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/address"
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/meetup_icon"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginStart="20sp"
+                    android:background="@color/meet_black" />
+
+                <EditText
+                    android:id="@+id/meet_naming"
+                    android:layout_width="match_parent"
+                    android:layout_height="45sp"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="20sp"
+                    android:hint="@string/input_title"
+                    android:inputType="text"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20sp"
+                android:id="@+id/address_layout"
                 android:layout_width="match_parent"
-                android:layout_height="45sp"
-                android:layout_marginTop="30sp"
-                android:layout_marginLeft="10sp"
-                android:layout_marginRight="10sp"
-                android:hint="@string/input_address"
-                android:inputType="text"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="25sp"
-                android:background="@drawable/edit_text_background"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/map_icon"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginStart="20sp" />
+
+                <EditText
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="45sp"
+                    android:layout_marginTop="20sp"
+                    android:hint="@string/input_address"
+                    android:inputType="text"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="20sp"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/date_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
+                android:layout_marginTop="30sp"
                 android:layout_marginBottom="10sp"
                 android:text="@string/meet_date"
                 android:textAlignment="center"
@@ -82,7 +106,7 @@
                 android:textSize="25sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address" />
+                app:layout_constraintTop_toBottomOf="@id/address_layout" />
 
             <DatePicker
                 android:id="@+id/meet_date"
@@ -142,16 +166,76 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/end_time_label" />
+
+            <CheckBox
+                android:padding="5sp"
+                android:checked="false"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:id="@+id/enter_check"
+                android:background="@drawable/check_round"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:text="@string/enter_control"/>
+
+            <EditText
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:id="@+id/enter_count"
+                android:layout_marginTop="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:enabled="false"
+                android:inputType="number"
+                android:textColorHint="@color/white"
+                android:textAlignment="center"
+                android:hint="@string/enter_count"/>
+
+            <CheckBox
+                android:padding="5sp"
+                android:layout_marginTop="20sp"
+                android:id="@+id/exit_check"
+                android:checked="false"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:background="@drawable/check_round"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:text="@string/exit_control"/>
+
+            <EditText
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:id="@+id/exit_count"
+                android:layout_marginTop="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:enabled="false"
+                android:inputType="number"
+                android:textColorHint="@color/white"
+                android:textAlignment="center"
+                android:hint="@string/exit_count"/>
         </LinearLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/create_click"
         android:layout_width="match_parent"
-        android:layout_height="70sp"
+        android:layout_height="80sp"
         android:text="@string/create_meet"
         android:background="@android:drawable/btn_default"
         android:textSize="25sp"
+        android:alpha="0.9"
         android:onClick="createMeetUp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

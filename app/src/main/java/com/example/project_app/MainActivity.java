@@ -2,6 +2,7 @@ package com.example.project_app;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -18,40 +20,31 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import java.util.HashMap;
-import java.util.Objects;
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseDatabase database;
-    // Обработчик сканирования QR кода
-    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
-            result -> {
+    private FirebaseFirestore database;
+    private String meetup_hash;
+    @SuppressLint("InflateParams")
+    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(
+            new ScanContract(), result -> {
                 // Если информация была считана
                 if (result.getContents() != null) {
-                    StyleableToast.makeText(this, "Сканирование прошло успешно", R.style.valid_toast).show();
-                } else {
-                    // Появляется при обычном выходе из режима сканирования
-                    StyleableToast.makeText(this, "Неудачная попытка сканирования", R.style.invalid_toast).show();
+                    Intent intent = new Intent(this, ScanResult.class);
+                    intent.putExtra("MEET_HASH", meetup_hash);
+                    intent.putExtra("QR_STRING", result.getContents());
+                    startActivity(intent);
                 }
             });
 
-
-    // Функция настраивает опции сканера и вызывает его
-    public void qrRead(View view) {
-        ScanOptions options = new ScanOptions();
-        options.setPrompt("Поднесите QR к камере");
-        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
-        options.setBeepEnabled(false);
-        barcodeLauncher.launch(options);
-    }
-
-    public void authorizationWithGoogle(View view) throws ApiException {
+    public void authorizationWithGoogle(View view) {
         GoogleSignInOptions googleOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -76,27 +69,38 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signInWithCredential(credential).addOnSuccessListener(authResult -> {
                     if (singInTask.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        HashMap<String, Object> userMap = new HashMap<>();
+
                         assert user != null;
-                        userMap.put("user_id", user.getUid());
-                        userMap.put("user_name", user.getDisplayName());
-                        userMap.put("user_email", user.getEmail());
 
-                        database.getReference()
-                                .child("USERS")
-                                .child(Objects.requireNonNull(
-                                        Objects.requireNonNull(user.getEmail()).replaceAll("[.#$\\[\\]]", ""))
-                                )
-                                .setValue(userMap);
+                        database.collection("USERS")
+                                .document(user.getUid())
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    DocumentSnapshot document = task.getResult();
 
-                        startActivity(new Intent(this, PersonalAccount.class));
-                        finish();
+                                    if (document.exists()) {
+                                        startActivity(new Intent(MainActivity.this, PersonalAccount.class));
+                                        finish();
+                                    } else {
+                                        HashMap<String, Object> userMap = new HashMap<>();
+                                        userMap.put("user_name", user.getDisplayName());
+                                        userMap.put("user_email", user.getEmail());
+                                        database.collection("USERS")
+                                                .document(user.getUid())
+                                                .set(userMap)
+                                                .addOnSuccessListener(unused -> {
+                                                    startActivity(new Intent(MainActivity.this, PersonalAccount.class));
+                                                    finish();
+                                                });
+                                    }
+                                });
+
                     } else {
                         StyleableToast.makeText(this, "Пользователь с указанной почтой не зарегистрирован", R.style.invalid_toast).show();
                     }
                 });
             } catch (ApiException AE) {
-                // Появляется при нажатии кнопки назад
+                //AE.printStackTrace();
             }
         }
     }
@@ -110,15 +114,52 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        database = FirebaseDatabase.getInstance();
+        database = FirebaseFirestore.getInstance();
 
         Button enter = findViewById(R.id.enter_view);
         Button register = findViewById(R.id.register_view);
+        Button scan = findViewById(R.id.scan_button);
         TextView password_recovery = findViewById(R.id.forget_password);
 
+        scan.setOnClickListener(view -> { qrRead(); });
         password_recovery.setOnClickListener(view -> { recoverPassword(); });
         enter.setOnClickListener(view -> { enter(); });
         register.setOnClickListener(view -> { registerUser(); });
+    }
+
+    @SuppressLint({"ResourceAsColor"})
+    private EditText createHashEdit() {
+        EditText hash_field = new EditText(this);
+        hash_field.setHintTextColor(Color.WHITE);
+        hash_field.setHint(R.string.meetup_key_word);
+        hash_field.setTextSize(20);
+        return hash_field;
+    }
+
+    private void scanMode() {
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Поднесите QR к камере");
+        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
+        options.setBeepEnabled(false);
+        barcodeLauncher.launch(options);
+    }
+
+    private void qrRead() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.custom_dialog);
+        EditText hash_input = createHashEdit();
+
+        builder.setView(hash_input)
+                .setPositiveButton("Ввод", (dialog, which) -> {
+                    if (!hash_input.getText().toString().isEmpty()) {
+                        meetup_hash = hash_input.getText().toString();
+                        scanMode();
+                    } else {
+                        StyleableToast.makeText(getApplicationContext(), "Ключевое слово обязательно!", R.style.invalid_toast).show();
+                    }
+                })
+                .setNegativeButton("Отмена", (dialog, which) -> { dialog.cancel(); })
+                .create()
+                .show();
     }
 
     private void enter() {

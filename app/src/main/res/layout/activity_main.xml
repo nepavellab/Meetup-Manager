@@ -140,19 +140,10 @@
                     android:textAlignment="center"
                     android:textColor="@color/material_yellow"
                     android:text="@string/forgot_password"/>
-
-                <TextView
-                    android:layout_marginTop="40sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/auto_by"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30sp"
@@ -176,11 +167,10 @@
         android:id="@+id/scan_button"
         android:layout_width="match_parent"
         android:layout_height="80sp"
-        android:alpha="0.8"
+        android:alpha="0.9"
         android:background="@android:drawable/btn_default"
         android:text="@string/scan"
         android:textSize="30sp"
-        android:onClick="qrRead"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

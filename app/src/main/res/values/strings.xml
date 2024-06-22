@@ -1,7 +1,12 @@
 <resources>
     <string name="welcome_meets">Добро пожаловать!</string>
-    <string name="confirm_meet_delete">Подтвердите удаление мероприятия</string>
+    <string name="confirm_delete">Подтвердите удаление</string>
     <string name="delete">Удалить</string>
+    <string name="enter_control">Контроль входа</string>
+    <string name="exit_control">Контроль выхода</string>
+    <string name="enter_count">Количество входов</string>
+    <string name="exit_count">Количество выходов</string>
+    <string name="meetup_key_word">Ключевое слово:</string>
     <string name="cancellation">Отмена</string>
     <string name="guests_here">Здесь будут гости мероприятия</string>
     <string name="share">Поделиться</string>
@@ -26,14 +31,19 @@
     <string name="scan">Режим сканирования</string>
     <string name="full_admin_name">ФИО (логин)</string>
     <string name="forgot_password">Забыли пароль?</string>
-    <string name="auto_by">Авторизоваться через:</string>
     <string name="logout">Выйти</string>
     <string name="add_meetup">Добавить мероприятие</string>
     <string name="fill_info">Заполните поля с информацией</string>
-    <string name="add">Добавить</string>
+    <string name="add_group">Добавить группу</string>
     <string name="save">Сохранить</string>
-    <string name="what">Что?</string>
-    <string name="where">Где?</string>
+    <string name="guests">Гости</string>
+    <string name="groups">Группы</string>
+    <string name="group_name">Название группы</string>
+    <string name="group_size">Количество участников группы</string>
+    <string name="not_arrived_status">Гость не входил</string>
+    <string name="arrived_status">Гость отсканировал QR на вход</string>
+    <string name="exit_status">Гость покинул мероприятие</string>
+    <string name="edit_mode">Режим редактирования</string>
 
     <!-- SHA-1 KEY FOR GOOGLE API -->
     <string name="default_web_client_id">616410057686-0qpje81ndcnvar4k184bgifao828mvou.apps.googleusercontent.com</string>

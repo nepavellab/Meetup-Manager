@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="cardStyle" parent="">
-        <item name="android:background">@drawable/card_style</item>
+    <style name="guest_card_style" parent="">
+        <item name="android:background">@drawable/guest_card_style</item>
+    </style>
+
+    <style name="meet_card_style" parent="">
+        <item name="android:background">@drawable/meet_card_style</item>
+    </style>
+
+    <style name="group_card_style" parent="">
+        <item name="android:background">@drawable/group_card_style</item>
+    </style>
+
+    <style name="custom_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:colorBackground">@color/black</item>
     </style>
 
     <style name="invalid_toast">

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/status_info_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black">
+
+    <ImageView
+        android:id="@+id/guest_not_arrived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/not_arrived_icon"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="48sp"
+        android:padding="10sp"
+        android:text="@string/not_arrived_status"
+        android:textColor="@color/white"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:layout_marginTop="20sp"
+        android:id="@+id/not_arrived_info"
+        app:layout_constraintLeft_toRightOf="@+id/guest_not_arrived"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <ImageView
+        android:id="@+id/guest_arrived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrived_icon"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/guest_not_arrived"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="48sp"
+        android:padding="10sp"
+        android:text="@string/arrived_status"
+        android:textColor="@color/white"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:layout_marginTop="20sp"
+        android:id="@+id/arrived_info"
+        app:layout_constraintLeft_toRightOf="@+id/guest_arrived"
+        app:layout_constraintTop_toBottomOf="@+id/not_arrived_info"/>
+
+    <ImageView
+        android:id="@+id/guest_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/guest_arrived"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/exit_icon"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="25sp"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="48sp"
+        android:padding="10sp"
+        android:text="@string/exit_status"
+        android:textColor="@color/white"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:layout_marginTop="20sp"
+        android:id="@+id/exit_info"
+        app:layout_constraintLeft_toRightOf="@+id/guest_exit"
+        app:layout_constraintTop_toBottomOf="@+id/arrived_info"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

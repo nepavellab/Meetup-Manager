@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/meet_black"
+    tools:context=".CreateGroup">
+
+    <ImageView
+        android:id="@+id/main_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/group_icon"
+        android:layout_marginTop="50sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/group_title"
+        app:layout_constraintTop_toBottomOf="@+id/main_icon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/group_icon"
+            android:layout_width="50sp"
+            android:layout_height="70sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="10sp"
+            android:src="@drawable/group_title_icon" />
+
+        <EditText
+            android:id="@+id/group_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="70sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginEnd="20sp"
+            android:hint="@string/group_name"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/group_size"
+        app:layout_constraintTop_toBottomOf="@+id/group_title"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/numb_icon"
+            android:layout_width="50sp"
+            android:layout_height="70sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="10sp"
+            android:src="@drawable/numeric_icon" />
+
+        <EditText
+            android:id="@+id/group_size_input"
+            android:layout_width="match_parent"
+            android:layout_height="70sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginEnd="20sp"
+            android:hint="@string/group_size"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/add_group_click"
+        android:layout_width="match_parent"
+        android:layout_height="80sp"
+        android:alpha="0.9"
+        android:text="@string/add_group"
+        android:background="@android:drawable/btn_default"
+        android:textSize="25sp"
+        android:onClick="addGroupClick"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

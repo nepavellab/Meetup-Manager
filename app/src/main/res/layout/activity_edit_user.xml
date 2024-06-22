@@ -13,103 +13,137 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/update_user_icon"
-        android:layout_marginTop="50sp"
+        android:layout_marginTop="30sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
-    <LinearLayout
-        android:id="@+id/registration_form"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50sp"
+        android:layout_height="0dp"
+        android:layout_marginTop="2sp"
         app:layout_constraintTop_toBottomOf="@+id/main_icon"
-        android:orientation="vertical">
+        android:layout_marginBottom="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/create_admin_button">
 
         <LinearLayout
+            android:id="@+id/registration_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="10sp"
+            app:layout_constraintTop_toBottomOf="@+id/main_icon"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/email_icon"
-                android:layout_width="50sp"
-                android:layout_height="70sp"
-                android:layout_marginTop="20sp"
-                android:layout_marginStart="20sp"
-                android:layout_marginEnd="10sp"
-                android:src="@drawable/user_email_icon" />
-
-            <EditText
-                android:id="@+id/update_email"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70sp"
-                android:layout_marginTop="20sp"
-                android:layout_marginEnd="20sp"
-                android:autofillHints="emailAddress"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/user_icon"
+                    android:layout_width="50sp"
+                    android:layout_height="70sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="10sp"
+                    android:src="@drawable/user_icon"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/admin_name"
+                    app:layout_constraintTop_toBottomOf="@+id/password_icon" />
 
-            <ImageView
-                android:id="@+id/phone_icon"
-                android:layout_width="50sp"
-                android:layout_height="70sp"
-                android:layout_marginTop="30sp"
-                android:layout_marginStart="20sp"
-                android:layout_marginEnd="10sp"
-                android:src="@drawable/phone_number_black_icon" />
+                <EditText
+                    android:id="@+id/update_guest_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="70sp"
+                    android:layout_marginTop="10sp"
+                    android:autofillHints="text"
+                    android:inputType="text"
+                    android:enabled="false"
+                    android:layout_marginEnd="20sp"
+                    android:hint="@string/full_admin_name"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/update_phone_number"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70sp"
-                android:layout_marginTop="30sp"
-                android:autofillHints="password"
-                android:inputType="phone"
-                android:layout_marginEnd="20sp"
-                android:hint="@string/phone_number"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/email_icon"
+                    android:layout_width="50sp"
+                    android:layout_height="70sp"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="10sp"
+                    android:src="@drawable/user_email_icon" />
+
+                <EditText
+                    android:id="@+id/update_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="70sp"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginEnd="20sp"
+                    android:autofillHints="emailAddress"
+                    android:enabled="false"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/phone_icon"
+                    android:layout_width="50sp"
+                    android:layout_height="70sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="10sp"
+                    android:background="@color/meet_black"
+                    android:src="@drawable/phone_number_black_icon" />
+
+                <EditText
+                    android:id="@+id/update_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="70sp"
+                    android:layout_marginTop="10sp"
+                    android:autofillHints="password"
+                    android:inputType="phone"
+                    android:enabled="false"
+                    android:layout_marginEnd="20sp"
+                    android:hint="@string/phone_number"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
+            </LinearLayout>
+
+            <CheckBox
+                android:layout_marginTop="10sp"
+                android:id="@+id/is_user_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:checked="false"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:background="@drawable/check_round"
+                android:text="@string/edit_mode"/>
 
             <ImageView
-                android:id="@+id/user_icon"
-                android:layout_width="50sp"
-                android:layout_height="70sp"
-                android:layout_marginTop="30sp"
-                android:layout_marginStart="20sp"
-                android:layout_marginEnd="10sp"
-                android:src="@drawable/user_icon"
+                android:id="@+id/QR_image"
+                android:layout_width="400sp"
+                android:layout_height="400sp"
+                android:layout_marginTop="20sp"
+                app:layout_constraintTop_toBottomOf="@+id/update_phone_number"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/admin_name"
-                app:layout_constraintTop_toBottomOf="@+id/password_icon" />
-
-            <EditText
-                android:id="@+id/update_guest_name"
-                android:layout_width="match_parent"
-                android:layout_height="70sp"
-                android:layout_marginTop="30sp"
-                android:autofillHints="text"
-                android:inputType="text"
-                android:layout_marginEnd="20sp"
-                android:hint="@string/full_admin_name"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                app:layout_constraintRight_toRightOf="parent"/>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/create_admin_button"
@@ -121,6 +155,5 @@
         android:textSize="30sp"
         android:onClick="saveUpdates"
         app:layout_constraintBottom_toBottomOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

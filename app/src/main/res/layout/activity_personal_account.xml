@@ -26,8 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15sp"
-        android:layout_marginEnd="15sp"
-        android:background="@drawable/round"
+        android:layout_marginEnd="20sp"
+        android:background="@drawable/round_add"
         android:onClick="createMeet"
         android:src="@drawable/add_icon"
         app:layout_constraintRight_toRightOf="parent"
@@ -50,5 +50,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

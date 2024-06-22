@@ -8,75 +8,140 @@
     android:layout_height="match_parent"
     tools:context=".MeetInfoDesk">
 
-    <TextView
-        android:id="@+id/what"
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:id="@+id/scroll_meet_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_marginTop="20sp"
-        android:textColor="@color/valid"
-        android:layout_marginStart="30sp"
-        android:fontFamily="@font/orbitron_variable_wght"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/local_meet_name"
-        android:text="@string/what"/>
+        android:layout_marginEnd="20sp"
+        android:layout_marginTop="10sp"
+        android:padding="10sp"
+        android:layout_marginStart="20sp"
+        app:layout_constraintTop_toTopOf="parent" >
 
-    <TextView
-        android:id="@+id/local_meet_name"
+        <TextView
+            android:id="@+id/local_meet_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/rem_variablefont_wght"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/scroll_meet_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_marginEnd="20sp"
+        android:layout_marginTop="10sp"
+        android:padding="10sp"
+        android:layout_marginStart="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_meet_name" >
+
+        <TextView
+            android:id="@+id/local_meet_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/rem_variablefont_wght"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </HorizontalScrollView>
+
+    <ImageButton
+        android:id="@+id/copy_meet_hash"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:src="@drawable/copy_icon"
+        android:background="@color/zxing_transparent"
+        android:layout_marginTop="5sp"
+        android:layout_marginStart="20sp"
+        android:onClick="copyMeetKeyWord"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_meet_address"
+        app:layout_constraintRight_toLeftOf="@+id/scroll_meet_hash"/>
+
+    <HorizontalScrollView
+        android:id="@+id/scroll_meet_hash"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        android:layout_marginStart="30sp"
-        android:scrollbars="horizontal"
-        android:layout_marginEnd="20sp"
-        android:maxHeight="45sp"
-        android:textAlignment="textStart"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        android:fontFamily="@font/rem_variablefont_wght"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/what"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginEnd="10sp"
+        android:layout_marginTop="10sp"
+        android:padding="10sp"
+        android:layout_marginStart="10sp"
+        app:layout_constraintRight_toLeftOf="@id/status_info_button"
+        app:layout_constraintLeft_toRightOf="@+id/copy_meet_hash"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_meet_address" >
 
-    <TextView
-        android:id="@+id/where"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/meet_key_word"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:fontFamily="@font/rem_variablefont_wght"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </HorizontalScrollView>
+
+    <ImageButton
+        android:id="@+id/status_info_button"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginEnd="20sp"
+        android:onClick="showStatusInformation"
+        android:src="@drawable/status_info_icon"
+        android:background="@color/meet_black"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scroll_meet_address"
+        app:layout_constraintLeft_toRightOf="@id/scroll_meet_hash"/>
+
+    <RadioGroup
+        android:id="@+id/modes"
+        android:layout_marginTop="10sp"
+        android:layout_width="350sp"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_marginTop="20sp"
-        android:textColor="@color/valid"
-        android:layout_marginStart="30sp"
-        android:fontFamily="@font/orbitron_variable_wght"
-        app:layout_constraintTop_toBottomOf="@+id/what"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_meet_hash"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/local_meet_address"
-        android:text="@string/where"/>
-
-    <TextView
-        android:id="@+id/local_meet_address"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        android:layout_marginEnd="20sp"
-        android:layout_marginStart="30sp"
-        android:maxHeight="45sp"
-        android:textAlignment="textStart"
-        android:scrollbars="horizontal"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        android:fontFamily="@font/rem_variablefont_wght"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/where"
-        app:layout_constraintTop_toBottomOf="@id/local_meet_name" />
+        android:orientation="horizontal">
+
+        <RadioButton android:id="@+id/guests_mode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:checked="true"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:fontFamily="@font/rem_variablefont_wght"
+            android:text="@string/guests" />
+
+        <RadioButton android:id="@+id/groups_mode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rem_variablefont_wght"
+            android:textSize="20sp"
+            android:text="@string/groups" />
+    </RadioGroup>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30sp"
-        android:layout_marginBottom="30sp"
-        app:layout_constraintTop_toBottomOf="@id/local_meet_address"
-        app:layout_constraintBottom_toTopOf="@id/add_guest_button" >
+        android:layout_marginTop="10sp"
+        android:layout_marginBottom="10sp"
+        app:layout_constraintTop_toBottomOf="@id/modes"
+        app:layout_constraintBottom_toTopOf="@id/add_mode_button" >
 
         <LinearLayout
             android:id="@+id/guest_list"
@@ -88,16 +153,15 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/add_guest_button"
+        android:id="@+id/add_mode_button"
         android:layout_width="match_parent"
         android:layout_height="80sp"
-        android:alpha="0.9"
-        android:text="@string/add_guest"
-        android:textSize="30sp"
-        android:onClick="addGuest"
+        android:angle="0.9"
         android:background="@android:drawable/btn_default"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

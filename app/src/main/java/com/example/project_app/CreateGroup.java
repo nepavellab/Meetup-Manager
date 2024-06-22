@@ -18,9 +18,10 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 import java.util.Random;
+
 import io.github.muddz.styleabletoast.StyleableToast;
 
-public class AddNewGuest extends AppCompatActivity {
+public class CreateGroup extends AppCompatActivity {
     private FirebaseFirestore database;
     private Meetup local_card;
     String KEY;
@@ -34,46 +35,40 @@ public class AddNewGuest extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addGuestClick(View view) throws WriterException {
+    public void addGroupClick(View view) throws WriterException {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        EditText guest_name = findViewById(R.id.guest_name_input);
-        EditText guest_phone = findViewById(R.id.guest_phone_input);
-        EditText guest_email = findViewById(R.id.guest_email_input);
+        EditText group_title = findViewById(R.id.group_name_input);
+        EditText group_size = findViewById(R.id.group_size_input);
 
-        String phone_numb = guest_phone.getText().toString().trim().replaceAll("[^0-9]", "");;
-
-        if (guest_email.getText().toString().isEmpty() ||
-            guest_name.getText().toString().isEmpty()  ||
-            phone_numb.isEmpty()) {
+        if (group_title.getText().toString().isEmpty() ||
+            group_size.getText().toString().isEmpty()) {
             StyleableToast.makeText(this, "Не все поля заполнены!", R.style.invalid_toast).show();
-            return;
-        } else if (!phoneNumberValidate(phone_numb))  { // номер телефона не валидный
-            StyleableToast.makeText(this, "Указанный номер телефона не является корретным", R.style.invalid_toast).show();
             return;
         }
 
-        String guest_id = generateUserId();
+        String group_id = generateUserId();
+        String group_enter_count = Objects.equals(local_card.exit_control, "inf") ?
+                local_card.entrance_control : Integer.toString(Integer.parseInt(local_card.entrance_control) * 2);
 
-        Guest guest = new Guest(guest_id,
-                guest_name.getText().toString().trim(),
-                guest_email.getText().toString().trim(),
-                phone_numb, "",
-                local_card.entrance_control, local_card.exit_control,
-                "off");
+        Group group = new Group(
+                group_title.getText().toString().trim(),
+                group_size.getText().toString().trim(),
+                group_id, "",
+                group_enter_count);
 
-        Bitmap qrMap = createQr(guest);
+        Bitmap qrMap = createQr(group);
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         qrMap.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
         byte[] bytes = byteStream.toByteArray();
-        guest.QR = Base64.encodeToString(bytes, Base64.DEFAULT);
+        group.QR = Base64.encodeToString(bytes, Base64.DEFAULT);
 
         database.collection("USERS")
                 .document(Objects.requireNonNull(mAuth.getUid()))
                 .collection("MEETS")
                 .document(KEY)
-                .collection("GUESTS")
-                .document(guest_id).set(guest).addOnCompleteListener(task -> {
-                    StyleableToast.makeText(this, "Гость " + guest.name + " успешно добавлен", R.style.valid_toast).show();
+                .collection("GROUPS")
+                .document(group_id).set(group).addOnCompleteListener(task -> {
+                    StyleableToast.makeText(this, "Группа " + group.name + " успешно добавлена", R.style.valid_toast).show();
 
                     Intent intent = new Intent(this, MeetInfoDesk.class);
                     intent.putExtra("KEY", KEY);
@@ -86,7 +81,7 @@ public class AddNewGuest extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_guest);
+        setContentView(R.layout.activity_create_group);
         // Получение ключа текущего мероприятия
         Bundle arguments = getIntent().getExtras();
         assert arguments != null;
@@ -95,16 +90,8 @@ public class AddNewGuest extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
     }
 
-    private boolean phoneNumberValidate(String phone_numb) { // проверка валидации корректна только для телефонных номеров РФ
-        return phone_numb.length() == 11 && (phone_numb.charAt(0) == '8' || phone_numb.charAt(0) == '7');
-    }
-
-    private String generateUserId() {
-        return Integer.toString(new Random().nextInt(Integer.MAX_VALUE - 10));
-    }
-
-    private Bitmap createQr(Guest guest) throws WriterException {
-        BitMatrix bitMatrix = new QRCodeWriter().encode(guest.getDataForQr(), BarcodeFormat.QR_CODE, 500, 500);
+    private Bitmap createQr(Group group) throws WriterException {
+        BitMatrix bitMatrix = new QRCodeWriter().encode(group.getDataForQr(), BarcodeFormat.QR_CODE, 500, 500);
         Bitmap qrMap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
         for (int x = 0; x < 500; x++) {
             for (int y = 0; y < 500; y++) {
@@ -112,5 +99,9 @@ public class AddNewGuest extends AppCompatActivity {
             }
         }
         return qrMap;
+    }
+
+    private String generateUserId() {
+        return Integer.toString(new Random().nextInt(Integer.MAX_VALUE - 10));
     }
 }
