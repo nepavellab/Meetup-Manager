@@ -225,7 +225,6 @@ public class MeetInfoDesk extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_delete)
                     .setMessage("Удалить гостя " + guest.name + "?")
                     .setPositiveButton(R.string.delete, (dialog, which) -> {
-                        // Удаление гостя
                         database.collection("USERS")
                                 .document(Objects.requireNonNull(mAuth.getUid()))
                                 .collection("MEETS")
@@ -266,7 +265,7 @@ public class MeetInfoDesk extends AppCompatActivity {
         return String.format("%s, вы приглашены на мероприятие: \"%s\", %s\n\nАдрес: \"%s\"\n\n" +
                         "К сообщению прикреплён QR код, " +
                         "покажите его при входе\n\n" +
-                        "Начало в %s, не опаздывайте!\n%s ждёт вас ;)",
+                        "Начало в %s, не опаздывайте!\n%s ждёт вас",
                 guest.name,
                 local_card.name,
                 local_card.date,
