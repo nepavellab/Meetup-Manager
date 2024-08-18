@@ -40,14 +40,14 @@ public class AddNewGuest extends AppCompatActivity {
         EditText guest_phone = findViewById(R.id.guest_phone_input);
         EditText guest_email = findViewById(R.id.guest_email_input);
 
-        String phone_numb = guest_phone.getText().toString().trim().replaceAll("[^0-9]", "");;
+        String phone_numb = guest_phone.getText().toString().trim().replaceAll("[^0-9]", "");
 
         if (guest_email.getText().toString().isEmpty() ||
             guest_name.getText().toString().isEmpty()  ||
             phone_numb.isEmpty()) {
             StyleableToast.makeText(this, "Не все поля заполнены!", R.style.invalid_toast).show();
             return;
-        } else if (!phoneNumberValidate(phone_numb))  { // номер телефона не валидный
+        } else if (!phoneNumberValidate(phone_numb))  {
             StyleableToast.makeText(this, "Указанный номер телефона не является корретным", R.style.invalid_toast).show();
             return;
         }
@@ -87,7 +87,6 @@ public class AddNewGuest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_guest);
-        // Получение ключа текущего мероприятия
         Bundle arguments = getIntent().getExtras();
         assert arguments != null;
         KEY = arguments.getString("KEY");
@@ -95,7 +94,7 @@ public class AddNewGuest extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
     }
 
-    private boolean phoneNumberValidate(String phone_numb) { // проверка валидации корректна только для телефонных номеров РФ
+    private boolean phoneNumberValidate(String phone_numb) {
         return phone_numb.length() == 11 && (phone_numb.charAt(0) == '8' || phone_numb.charAt(0) == '7');
     }
 

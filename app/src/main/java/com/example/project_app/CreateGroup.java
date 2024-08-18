@@ -18,7 +18,6 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 import java.util.Random;
-
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class CreateGroup extends AppCompatActivity {

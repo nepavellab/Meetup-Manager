@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Group implements Serializable  {
-    public String name, size, id, QR, entrance_count, exit_count;
+    public String name, size, id, QR, entrance_count;
 
     public Group () {
         // default to interface

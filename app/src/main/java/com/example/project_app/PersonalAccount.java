@@ -23,10 +23,9 @@ import io.github.muddz.styleabletoast.StyleableToast;
 import java.util.Objects;
 
 public class PersonalAccount extends AppCompatActivity {
-    private FirebaseFirestore database; // ссылка на базу данных
-    private LinearLayout linearLayout; // контейнер, динамически обновляющий карточки пользователя
+    private FirebaseFirestore database;
+    private LinearLayout linearLayout;
 
-    // Функция открывает форму для создания мероприятия
     public void createMeet(View view) {
         startActivity(new Intent(this, CreateMeetUp.class));
     }
@@ -79,18 +78,14 @@ public class PersonalAccount extends AppCompatActivity {
 
         constraintLayout.setLayoutParams(params);
 
-        // Создание кнопки редактирования
         ImageButton edit_btn = constraintLayout.findViewById(R.id.edit_button);
         edit_btn.setOnClickListener(view -> {
-            // Передаём данные о выбранном мероприятии
             Intent current_card = new Intent(PersonalAccount.this, MeetInfoDesk.class);
             current_card.putExtra(Meetup.class.getSimpleName(), meet_card);
-            // Передача ключа текущего мероприятия
             current_card.putExtra("KEY", meet_card.id);
             startActivity(current_card);
         });
 
-        // Создание кнопки удаления
         ImageButton delete_btn = constraintLayout.findViewById(R.id.delete_button);
         delete_btn.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(PersonalAccount.this, R.style.custom_dialog);
@@ -99,7 +94,6 @@ public class PersonalAccount extends AppCompatActivity {
                     .setMessage("Удалить мероприятие " + name.getText().toString() + "?")
                     .setPositiveButton(R.string.delete, (dialog, which) -> {
                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                        // Удаление мероприятия и его карточки
                         database.collection("USERS")
                                 .document(Objects.requireNonNull(mAuth.getUid()))
                                 .collection("MEETS")
@@ -115,11 +109,8 @@ public class PersonalAccount extends AppCompatActivity {
         linearLayout.addView(constraintLayout);
     }
 
-    // Функция выхода из аккаунта
     public void logout(View view) {
-        // Разлогиниваем пользователя
         FirebaseAuth.getInstance().signOut();
-        // Выход из Google аккаунта
         GoogleSignInOptions googleOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -128,7 +119,6 @@ public class PersonalAccount extends AppCompatActivity {
         googleSignInClient.signOut().addOnCompleteListener(PersonalAccount.this, task -> {
 
         });
-        // Переходим на страницу входа
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

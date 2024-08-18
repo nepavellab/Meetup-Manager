@@ -39,7 +39,7 @@ public class MeetInfoDesk extends AppCompatActivity {
     private FirebaseFirestore database;
     private LinearLayout linearLayout;
     private Meetup local_card;
-    private String MEET_KEY; // Ключ текущего мероприятия для базы данных
+    private String MEET_KEY;
     FirebaseAuth mAuth;
 
     @Override
@@ -104,7 +104,6 @@ public class MeetInfoDesk extends AppCompatActivity {
                     add_button.setText("Добавить гостя");
                     add_button.setOnClickListener(view -> {
                         Intent intent = new Intent(this, AddNewGuest.class);
-                        // Ключ мероприятия
                         intent.putExtra("KEY", Objects.requireNonNull(MEET_KEY));
                         intent.putExtra(Meetup.class.getSimpleName(), local_card);
                         startActivity(intent);
@@ -115,7 +114,6 @@ public class MeetInfoDesk extends AppCompatActivity {
                     add_button.setText("Добавить группу");
                     add_button.setOnClickListener(view -> {
                         Intent intent = new Intent(this, CreateGroup.class);
-                        // Ключ мероприятия
                         intent.putExtra("KEY", Objects.requireNonNull(MEET_KEY));
                         intent.putExtra(Meetup.class.getSimpleName(), local_card);
                         startActivity(intent);
@@ -128,7 +126,6 @@ public class MeetInfoDesk extends AppCompatActivity {
         add_button.setText("Добавить гостя");
         add_button.setOnClickListener(view -> {
             Intent intent = new Intent(this, AddNewGuest.class);
-            // Ключ мероприятия
             intent.putExtra("KEY", Objects.requireNonNull(MEET_KEY));
             intent.putExtra(Meetup.class.getSimpleName(), local_card);
             startActivity(intent);
@@ -247,7 +244,7 @@ public class MeetInfoDesk extends AppCompatActivity {
         send_qr_btn.setOnClickListener(view -> {
             byte[] decodedByte = Base64.decode(guest.QR, Base64.DEFAULT);
             Bitmap qrMap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-            Uri qrUri = null;
+            Uri qrUri;
             try {
                 qrUri = getContentUriFromBitmap(qrMap, guest);
             } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -313,7 +310,6 @@ public class MeetInfoDesk extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_delete)
                     .setMessage("Удалить группу " + group.name + "?")
                     .setPositiveButton(R.string.delete, (dialog, which) -> {
-                        // Удаление гостя
                         database.collection("USERS")
                                 .document(Objects.requireNonNull(mAuth.getUid()))
                                 .collection("MEETS")
@@ -332,7 +328,7 @@ public class MeetInfoDesk extends AppCompatActivity {
         generate_qr_btn.setOnClickListener(view -> {
             byte[] decodedByte = Base64.decode(group.QR, Base64.DEFAULT);
             Bitmap qrMap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-            Uri qrUri = null;
+            Uri qrUri;
             try {
                 qrUri = getContentUriFromBitmap(qrMap, group);
             } catch (NoSuchFieldException | IllegalAccessException e) {

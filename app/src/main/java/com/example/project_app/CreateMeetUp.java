@@ -29,7 +29,6 @@ public class CreateMeetUp extends AppCompatActivity {
     }
 
     public void createMeetUp(View view) {
-        // Получение данных из представлений
         TimePicker meetup_start_time = findViewById(R.id.meet_start_time);
         TimePicker meetup_end_time = findViewById(R.id.meet_end_time);
         DatePicker meetup_date = findViewById(R.id.meet_date);
@@ -38,7 +37,7 @@ public class CreateMeetUp extends AppCompatActivity {
         String meet_enter_count = ((EditText) findViewById(R.id.enter_count))
                 .getText().toString().replaceAll("[^0-9]", "");
         String meet_exit_count = ((EditText) findViewById(R.id.exit_count))
-                .getText().toString().replaceAll("[^0-9]", "");;
+                .getText().toString().replaceAll("[^0-9]", "");
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
@@ -46,12 +45,10 @@ public class CreateMeetUp extends AppCompatActivity {
         String enter_count = meet_enter_count.isEmpty() ? "inf" : meet_enter_count;
         String exit_count = meet_exit_count.isEmpty() ? "inf" : meet_exit_count;
 
-        // Форматируем полученные данные даты и времени
         String meet_date = date_format(meetup_date);
         String meet_start_time = time_format(meetup_start_time);
         String meet_end_time = time_format(meetup_end_time);
 
-        // Проверка заполнения всех полей (все текстовые представления обязательны для заполнения)
         if (meet_name.isEmpty() || meet_address.isEmpty()) {
             StyleableToast.makeText(this, "Не все поля заполнены!", R.style.invalid_toast).show();
             return;
@@ -82,7 +79,6 @@ public class CreateMeetUp extends AppCompatActivity {
         TimePicker startTime = findViewById(R.id.meet_start_time);
         TimePicker endTime = findViewById(R.id.meet_end_time);
 
-        // Задание 24-часового формата таймера
         startTime.setIs24HourView(true);
         endTime.setIs24HourView(true);
 
@@ -101,14 +97,12 @@ public class CreateMeetUp extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
     }
 
-    // Форматирование строки даты к виду: "дд.мм.гггг"
     private String date_format(DatePicker datePicker) {
         return  datePicker.getDayOfMonth() + "." +
                 (datePicker.getMonth() < 9 ? "0" + (datePicker.getMonth() + 1) : (datePicker.getMonth() + 1)) + "." +
                 datePicker.getYear();
     }
 
-    // Форматирование строки времени к виду: "чч:мм:00" (точность до минуты)
     private String time_format(TimePicker timePicker) {
         return  (timePicker.getHour() < 10 ? "0" + timePicker.getHour() : timePicker.getHour()) + ":" +
                 (timePicker.getMinute() < 10 ? "0" + timePicker.getMinute() : timePicker.getMinute());

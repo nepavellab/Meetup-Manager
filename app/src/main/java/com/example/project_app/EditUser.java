@@ -48,7 +48,6 @@ public class EditUser extends AppCompatActivity {
             StyleableToast.makeText(this, "Некорретный номер телефона", R.style.invalid_toast).show();
         }
 
-        //database.setValue(guest);
         database.collection("USERS")
                 .document(Objects.requireNonNull(mAuth.getUid()))
                 .collection("MEETS")
@@ -110,7 +109,7 @@ public class EditUser extends AppCompatActivity {
         });
     }
 
-    private boolean phoneNumberValidate(String phone_numb) { // проверка валидации корректна только для телефонных номеров РФ
+    private boolean phoneNumberValidate(String phone_numb) {
         return phone_numb.length() == 11 && (phone_numb.charAt(0) == '8' || phone_numb.charAt(0) == '7');
     }
 }
