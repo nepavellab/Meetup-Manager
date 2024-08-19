@@ -46,5 +46,5 @@
     <string name="edit_mode">Режим редактирования</string>
 
     <!-- SHA-1 KEY FOR GOOGLE API -->
-    <string name="default_web_client_id">616410057686-0qpje81ndcnvar4k184bgifao828mvou.apps.googleusercontent.com</string>
+    <string name="default_web_client_id">[значение ключа]</string>
 </resources>
