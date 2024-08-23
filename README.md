@@ -1,4 +1,4 @@
-# <img src="https://img.shields.io/badge/Описание_приложения-8A2BE2" width="300"/>
+# <img src="https://img.shields.io/badge/Описание_приложения-8A2BE2" width="250"/>
 Основной функционал данного мобильного приложения - простая и удобная организация локальный встреч и мероприятий для небольшой группы людей, таких как:
 - Встреча выпускников
 - День рождения
@@ -6,7 +6,7 @@
 - ...
 <br /><br />
 
-# <img src="https://img.shields.io/badge/Главные_функции_приложения-8A2BE2" width="350"/>
+# <img src="https://img.shields.io/badge/Главные_функции_приложения-8A2BE2" width="300"/>
 - Добавление и удаление
 - Добавление и удаление гостей
 - Редактирование карточек гостя
@@ -17,7 +17,7 @@
 В качестве отдельного функционала реализована работа с группами гостей
 <br /><br />
 
-# <img src="https://img.shields.io/badge/Стек_технологий-8A2BE2" width="200"/>
+# <img src="https://img.shields.io/badge/Стек_технологий-8A2BE2" width="170"/>
 <div align="left">
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-plain-wordmark.svg" width="70"/>
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original-wordmark.svg" width="70"/>
@@ -26,7 +26,7 @@
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/xml/xml-plain.svg" width="70"/>
 </div><br /><br />
 
-# <img src="https://img.shields.io/badge/Для_разработчиков-8A2BE2" width="230"/>
+# <img src="https://img.shields.io/badge/Для_разработчиков-8A2BE2" width="190"/>
 Чтобы успешно синхронизировать gradle, добавьте внутри файла build.gradle (Module:app) в блок `dependencies`:
 
 ```gradle
@@ -45,7 +45,7 @@ public ClassName() {
 ```
 <br />
 
-# <img src="https://img.shields.io/badge/Работа_приложения-8A2BE2" width="250"/>
+# <img src="https://img.shields.io/badge/Работа_приложения-8A2BE2" width="200"/>
 
 ## Регистрация и авторизация в приложении
 Приложение поддерживает регистрацию с помощью почты, авторизацию черее почту и через аккаунт Google, а так же имеет функцию "Забыл пароль".
